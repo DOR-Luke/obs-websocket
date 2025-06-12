@@ -130,7 +130,7 @@ private:
 						  calldata_t *data); // Direct callback
 	static void HandleInputAudioMonitorTypeChanged(void *param,
 						       calldata_t *data); // Direct callback
-	void HandleInputVolumeMeters(std::vector<json> inputs);           // AudioMeter::Handler callback
+	void HandleInputVolumeMeters(std::vector<json> inputs, std::vector<json> outputs);           // AudioMeter::Handler callback
 
 	// Transitions
 	void HandleCurrentSceneTransitionChanged();

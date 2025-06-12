@@ -50,6 +50,7 @@ Here's info on how to connect to obs-websocket
 These steps should be followed precisely. Failure to connect to the server as instructed will likely result in your client being treated in an undefined way.
 
 - Initial HTTP request made to the obs-websocket server.
+
   - The `Sec-WebSocket-Protocol` header can be used to tell obs-websocket which kind of message encoding to use. By default, obs-websocket uses JSON over text. Available subprotocols:
     - `obswebsocket.json` - JSON over text frames
     - `obswebsocket.msgpack` - MsgPack over binary frames
@@ -57,11 +58,13 @@ These steps should be followed precisely. Failure to connect to the server as in
 - Once the connection is upgraded, the websocket server will immediately send an [OpCode 0 `Hello`](#hello-opcode-0) message to the client.
 
 - The client listens for the `Hello` and responds with an [OpCode 1 `Identify`](#identify-opcode-1) containing all appropriate session parameters.
+
   - If there is an `authentication` field in the `messageData` object, the server requires authentication, and the steps in [Creating an authentication string](#creating-an-authentication-string) should be followed.
   - If there is no `authentication` field, the resulting `Identify` object sent to the server does not require an `authentication` string.
   - The client determines if the server's `rpcVersion` is supported, and if not it provides its closest supported version in `Identify`.
 
 - The server receives and processes the `Identify` sent by the client.
+
   - If authentication is required and the `Identify` message data does not contain an `authentication` string, or the string is not correct, the connection is closed with `WebSocketCloseCode::AuthenticationFailed`
   - If the client has requested an `rpcVersion` which the server cannot use, the connection is closed with `WebSocketCloseCode::UnsupportedRpcVersion`. This system allows both the server and client to have seamless backwards compatibility.
   - If any other parameters are malformed (invalid type, etc), the connection is closed with an appropriate close code.
@@ -1585,11 +1588,11 @@ If a plugin or script implements vendor requests or events, documentation is exp
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| vendorName | String | Name of the vendor emitting the event |
-| eventType | String | Vendor-provided event typedef |
-| eventData | Object | Vendor-provided event data. {} if event does not provide any data |
+| Name       |  Type  | Description                                                       |
+| ---------- | :----: | ----------------------------------------------------------------- |
+| vendorName | String | Name of the vendor emitting the event                             |
+| eventType  | String | Vendor-provided event typedef                                     |
+| eventData  | Object | Vendor-provided event data. {} if event does not provide any data |
 
 ---
 
@@ -1603,8 +1606,8 @@ Custom event emitted by `BroadcastCustomEvent`.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name      |  Type  | Description       |
+| --------- | :----: | ----------------- |
 | eventData | Object | Custom event data |
 
 ## Config Events
@@ -1622,8 +1625,8 @@ scene collection change is considered undefined behavior and can cause crashes!
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name                |  Type  | Description                          |
+| ------------------- | :----: | ------------------------------------ |
 | sceneCollectionName | String | Name of the current scene collection |
 
 ---
@@ -1640,8 +1643,8 @@ Note: If polling has been paused during `CurrentSceneCollectionChanging`, this i
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name                |  Type  | Description                      |
+| ------------------- | :----: | -------------------------------- |
 | sceneCollectionName | String | Name of the new scene collection |
 
 ---
@@ -1656,8 +1659,8 @@ The scene collection list has changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name             |        Type         | Description                       |
+| ---------------- | :-----------------: | --------------------------------- |
 | sceneCollections | Array&lt;String&gt; | Updated list of scene collections |
 
 ---
@@ -1672,8 +1675,8 @@ The current profile has begun changing.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name        |  Type  | Description                 |
+| ----------- | :----: | --------------------------- |
 | profileName | String | Name of the current profile |
 
 ---
@@ -1688,8 +1691,8 @@ The current profile has changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name        |  Type  | Description             |
+| ----------- | :----: | ----------------------- |
 | profileName | String | Name of the new profile |
 
 ---
@@ -1704,8 +1707,8 @@ The profile list has changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name     |        Type         | Description              |
+| -------- | :-----------------: | ------------------------ |
 | profiles | Array&lt;String&gt; | Updated list of profiles |
 
 ## Scenes Events
@@ -1720,11 +1723,11 @@ A new scene has been created.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| sceneName | String | Name of the new scene |
-| sceneUuid | String | UUID of the new scene |
-| isGroup | Boolean | Whether the new scene is a group |
+| Name      |  Type   | Description                      |
+| --------- | :-----: | -------------------------------- |
+| sceneName | String  | Name of the new scene            |
+| sceneUuid | String  | UUID of the new scene            |
+| isGroup   | Boolean | Whether the new scene is a group |
 
 ---
 
@@ -1738,11 +1741,11 @@ A scene has been removed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| sceneName | String | Name of the removed scene |
-| sceneUuid | String | UUID of the removed scene |
-| isGroup | Boolean | Whether the scene was a group |
+| Name      |  Type   | Description                   |
+| --------- | :-----: | ----------------------------- |
+| sceneName | String  | Name of the removed scene     |
+| sceneUuid | String  | UUID of the removed scene     |
+| isGroup   | Boolean | Whether the scene was a group |
 
 ---
 
@@ -1756,11 +1759,11 @@ The name of a scene has changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| sceneUuid | String | UUID of the scene |
+| Name         |  Type  | Description           |
+| ------------ | :----: | --------------------- |
+| sceneUuid    | String | UUID of the scene     |
 | oldSceneName | String | Old name of the scene |
-| sceneName | String | New name of the scene |
+| sceneName    | String | New name of the scene |
 
 ---
 
@@ -1774,8 +1777,8 @@ The current program scene has changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name      |  Type  | Description                            |
+| --------- | :----: | -------------------------------------- |
 | sceneName | String | Name of the scene that was switched to |
 | sceneUuid | String | UUID of the scene that was switched to |
 
@@ -1791,8 +1794,8 @@ The current preview scene has changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name      |  Type  | Description                            |
+| --------- | :----: | -------------------------------------- |
 | sceneName | String | Name of the scene that was switched to |
 | sceneUuid | String | UUID of the scene that was switched to |
 
@@ -1810,8 +1813,8 @@ TODO: Make OBS fire this event when scenes are reordered.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name   |        Type         | Description             |
+| ------ | :-----------------: | ----------------------- |
 | scenes | Array&lt;Object&gt; | Updated array of scenes |
 
 ## Inputs Events
@@ -1826,14 +1829,14 @@ An input has been created.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| inputName | String | Name of the input |
-| inputUuid | String | UUID of the input |
-| inputKind | String | The kind of the input |
-| unversionedInputKind | String | The unversioned kind of input (aka no `_v2` stuff) |
-| inputSettings | Object | The settings configured to the input when it was created |
-| defaultInputSettings | Object | The default settings for the input |
+| Name                 |  Type  | Description                                              |
+| -------------------- | :----: | -------------------------------------------------------- |
+| inputName            | String | Name of the input                                        |
+| inputUuid            | String | UUID of the input                                        |
+| inputKind            | String | The kind of the input                                    |
+| unversionedInputKind | String | The unversioned kind of input (aka no `_v2` stuff)       |
+| inputSettings        | Object | The settings configured to the input when it was created |
+| defaultInputSettings | Object | The default settings for the input                       |
 
 ---
 
@@ -1847,8 +1850,8 @@ An input has been removed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name      |  Type  | Description       |
+| --------- | :----: | ----------------- |
 | inputName | String | Name of the input |
 | inputUuid | String | UUID of the input |
 
@@ -1864,11 +1867,11 @@ The name of an input has changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| inputUuid | String | UUID of the input |
+| Name         |  Type  | Description           |
+| ------------ | :----: | --------------------- |
+| inputUuid    | String | UUID of the input     |
 | oldInputName | String | Old name of the input |
-| inputName | String | New name of the input |
+| inputName    | String | New name of the input |
 
 ---
 
@@ -1884,10 +1887,10 @@ Note: On some inputs, changing values in the properties dialog will cause an imm
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| inputName | String | Name of the input |
-| inputUuid | String | UUID of the input |
+| Name          |  Type  | Description                      |
+| ------------- | :----: | -------------------------------- |
+| inputName     | String | Name of the input                |
+| inputUuid     | String | UUID of the input                |
 | inputSettings | Object | New settings object of the input |
 
 ---
@@ -1904,10 +1907,10 @@ When an input is active, it means it's being shown by the program feed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| inputName | String | Name of the input |
-| inputUuid | String | UUID of the input |
+| Name        |  Type   | Description                 |
+| ----------- | :-----: | --------------------------- |
+| inputName   | String  | Name of the input           |
+| inputUuid   | String  | UUID of the input           |
 | videoActive | Boolean | Whether the input is active |
 
 ---
@@ -1924,10 +1927,10 @@ When an input is showing, it means it's being shown by the preview or a dialog.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| inputName | String | Name of the input |
-| inputUuid | String | UUID of the input |
+| Name         |  Type   | Description                  |
+| ------------ | :-----: | ---------------------------- |
+| inputName    | String  | Name of the input            |
+| inputUuid    | String  | UUID of the input            |
 | videoShowing | Boolean | Whether the input is showing |
 
 ---
@@ -1942,10 +1945,10 @@ An input's mute state has changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| inputName | String | Name of the input |
-| inputUuid | String | UUID of the input |
+| Name       |  Type   | Description                |
+| ---------- | :-----: | -------------------------- |
+| inputName  | String  | Name of the input          |
+| inputUuid  | String  | UUID of the input          |
 | inputMuted | Boolean | Whether the input is muted |
 
 ---
@@ -1960,12 +1963,12 @@ An input's volume level has changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| inputName | String | Name of the input |
-| inputUuid | String | UUID of the input |
+| Name           |  Type  | Description                 |
+| -------------- | :----: | --------------------------- |
+| inputName      | String | Name of the input           |
+| inputUuid      | String | UUID of the input           |
 | inputVolumeMul | Number | New volume level multiplier |
-| inputVolumeDb | Number | New volume level in dB |
+| inputVolumeDb  | Number | New volume level in dB      |
 
 ---
 
@@ -1979,10 +1982,10 @@ The audio balance value of an input has changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| inputName | String | Name of the input |
-| inputUuid | String | UUID of the input |
+| Name              |  Type  | Description                          |
+| ----------------- | :----: | ------------------------------------ |
+| inputName         | String | Name of the input                    |
+| inputUuid         | String | UUID of the input                    |
 | inputAudioBalance | Number | New audio balance value of the input |
 
 ---
@@ -1997,10 +2000,10 @@ The sync offset of an input has changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| inputName | String | Name of the input |
-| inputUuid | String | UUID of the input |
+| Name                 |  Type  | Description                     |
+| -------------------- | :----: | ------------------------------- |
+| inputName            | String | Name of the input               |
+| inputUuid            | String | UUID of the input               |
 | inputAudioSyncOffset | Number | New sync offset in milliseconds |
 
 ---
@@ -2015,10 +2018,10 @@ The audio tracks of an input have changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| inputName | String | Name of the input |
-| inputUuid | String | UUID of the input |
+| Name             |  Type  | Description                                                      |
+| ---------------- | :----: | ---------------------------------------------------------------- |
+| inputName        | String | Name of the input                                                |
+| inputUuid        | String | UUID of the input                                                |
 | inputAudioTracks | Object | Object of audio tracks along with their associated enable states |
 
 ---
@@ -2039,17 +2042,17 @@ Available types are:
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| inputName | String | Name of the input |
-| inputUuid | String | UUID of the input |
+| Name        |  Type  | Description                   |
+| ----------- | :----: | ----------------------------- |
+| inputName   | String | Name of the input             |
+| inputUuid   | String | UUID of the input             |
 | monitorType | String | New monitor type of the input |
 
 ---
 
 ### InputVolumeMeters
 
-A high-volume event providing volume levels of all active inputs every 50 milliseconds.
+A high-volume event providing volume levels of all active inputs and outputs every 50 milliseconds.
 
 - Complexity Rating: `4/5`
 - Latest Supported RPC Version: `1`
@@ -2057,9 +2060,10 @@ A high-volume event providing volume levels of all active inputs every 50 millis
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| inputs | Array&lt;Object&gt; | Array of active inputs with their associated volume levels |
+| Name    |        Type         | Description                                                 |
+| ------- | :-----------------: | ----------------------------------------------------------- |
+| inputs  | Array&lt;Object&gt; | Array of active inputs with their associated volume levels  |
+| outputs | Array&lt;Object&gt; | Array of active outputs with their associated volume levels |
 
 ## Transitions Events
 
@@ -2073,8 +2077,8 @@ The current scene transition has changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name           |  Type  | Description                |
+| -------------- | :----: | -------------------------- |
 | transitionName | String | Name of the new transition |
 | transitionUuid | String | UUID of the new transition |
 
@@ -2090,8 +2094,8 @@ The current scene transition duration has changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name               |  Type  | Description                         |
+| ------------------ | :----: | ----------------------------------- |
 | transitionDuration | Number | Transition duration in milliseconds |
 
 ---
@@ -2106,8 +2110,8 @@ A scene transition has started.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name           |  Type  | Description           |
+| -------------- | :----: | --------------------- |
 | transitionName | String | Scene transition name |
 | transitionUuid | String | Scene transition UUID |
 
@@ -2125,8 +2129,8 @@ Note: Does not appear to trigger when the transition is interrupted by the user.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name           |  Type  | Description           |
+| -------------- | :----: | --------------------- |
 | transitionName | String | Scene transition name |
 | transitionUuid | String | Scene transition UUID |
 
@@ -2136,7 +2140,7 @@ Note: Does not appear to trigger when the transition is interrupted by the user.
 
 A scene transition's video has completed fully.
 
-Useful for stinger transitions to tell when the video *actually* ends.
+Useful for stinger transitions to tell when the video _actually_ ends.
 `SceneTransitionEnded` only signifies the cut point, not the completion of transition playback.
 
 Note: Appears to be called by every transition, regardless of relevance.
@@ -2147,8 +2151,8 @@ Note: Appears to be called by every transition, regardless of relevance.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name           |  Type  | Description           |
+| -------------- | :----: | --------------------- |
 | transitionName | String | Scene transition name |
 | transitionUuid | String | Scene transition UUID |
 
@@ -2164,10 +2168,10 @@ A source's filter list has been reindexed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| sourceName | String | Name of the source |
-| filters | Array&lt;Object&gt; | Array of filter objects |
+| Name       |        Type         | Description             |
+| ---------- | :-----------------: | ----------------------- |
+| sourceName |       String        | Name of the source      |
+| filters    | Array&lt;Object&gt; | Array of filter objects |
 
 ---
 
@@ -2181,14 +2185,14 @@ A filter has been added to a source.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| sourceName | String | Name of the source the filter was added to |
-| filterName | String | Name of the filter |
-| filterKind | String | The kind of the filter |
-| filterIndex | Number | Index position of the filter |
-| filterSettings | Object | The settings configured to the filter when it was created |
-| defaultFilterSettings | Object | The default settings for the filter |
+| Name                  |  Type  | Description                                               |
+| --------------------- | :----: | --------------------------------------------------------- |
+| sourceName            | String | Name of the source the filter was added to                |
+| filterName            | String | Name of the filter                                        |
+| filterKind            | String | The kind of the filter                                    |
+| filterIndex           | Number | Index position of the filter                              |
+| filterSettings        | Object | The settings configured to the filter when it was created |
+| defaultFilterSettings | Object | The default settings for the filter                       |
 
 ---
 
@@ -2202,10 +2206,10 @@ A filter has been removed from a source.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name       |  Type  | Description                          |
+| ---------- | :----: | ------------------------------------ |
 | sourceName | String | Name of the source the filter was on |
-| filterName | String | Name of the filter |
+| filterName | String | Name of the filter                   |
 
 ---
 
@@ -2219,11 +2223,11 @@ The name of a source filter has changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| sourceName | String | The source the filter is on |
-| oldFilterName | String | Old name of the filter |
-| filterName | String | New name of the filter |
+| Name          |  Type  | Description                 |
+| ------------- | :----: | --------------------------- |
+| sourceName    | String | The source the filter is on |
+| oldFilterName | String | Old name of the filter      |
+| filterName    | String | New name of the filter      |
 
 ---
 
@@ -2237,11 +2241,11 @@ An source filter's settings have changed (been updated).
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| sourceName | String | Name of the source the filter is on |
-| filterName | String | Name of the filter |
-| filterSettings | Object | New settings object of the filter |
+| Name           |  Type  | Description                         |
+| -------------- | :----: | ----------------------------------- |
+| sourceName     | String | Name of the source the filter is on |
+| filterName     | String | Name of the filter                  |
+| filterSettings | Object | New settings object of the filter   |
 
 ---
 
@@ -2255,11 +2259,11 @@ A source filter's enable state has changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| sourceName | String | Name of the source the filter is on |
-| filterName | String | Name of the filter |
-| filterEnabled | Boolean | Whether the filter is enabled |
+| Name          |  Type   | Description                         |
+| ------------- | :-----: | ----------------------------------- |
+| sourceName    | String  | Name of the source the filter is on |
+| filterName    | String  | Name of the filter                  |
+| filterEnabled | Boolean | Whether the filter is enabled       |
 
 ## Scene Items Events
 
@@ -2273,14 +2277,14 @@ A scene item has been created.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| sceneName | String | Name of the scene the item was added to |
-| sceneUuid | String | UUID of the scene the item was added to |
-| sourceName | String | Name of the underlying source (input/scene) |
-| sourceUuid | String | UUID of the underlying source (input/scene) |
-| sceneItemId | Number | Numeric ID of the scene item |
-| sceneItemIndex | Number | Index position of the item |
+| Name           |  Type  | Description                                 |
+| -------------- | :----: | ------------------------------------------- |
+| sceneName      | String | Name of the scene the item was added to     |
+| sceneUuid      | String | UUID of the scene the item was added to     |
+| sourceName     | String | Name of the underlying source (input/scene) |
+| sourceUuid     | String | UUID of the underlying source (input/scene) |
+| sceneItemId    | Number | Numeric ID of the scene item                |
+| sceneItemIndex | Number | Index position of the item                  |
 
 ---
 
@@ -2296,13 +2300,13 @@ This event is not emitted when the scene the item is in is removed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| sceneName | String | Name of the scene the item was removed from |
-| sceneUuid | String | UUID of the scene the item was removed from |
-| sourceName | String | Name of the underlying source (input/scene) |
-| sourceUuid | String | UUID of the underlying source (input/scene) |
-| sceneItemId | Number | Numeric ID of the scene item |
+| Name        |  Type  | Description                                 |
+| ----------- | :----: | ------------------------------------------- |
+| sceneName   | String | Name of the scene the item was removed from |
+| sceneUuid   | String | UUID of the scene the item was removed from |
+| sourceName  | String | Name of the underlying source (input/scene) |
+| sourceUuid  | String | UUID of the underlying source (input/scene) |
+| sceneItemId | Number | Numeric ID of the scene item                |
 
 ---
 
@@ -2316,10 +2320,10 @@ A scene's item list has been reindexed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| sceneName | String | Name of the scene |
-| sceneUuid | String | UUID of the scene |
+| Name       |        Type         | Description                 |
+| ---------- | :-----------------: | --------------------------- |
+| sceneName  |       String        | Name of the scene           |
+| sceneUuid  |       String        | UUID of the scene           |
 | sceneItems | Array&lt;Object&gt; | Array of scene item objects |
 
 ---
@@ -2334,11 +2338,11 @@ A scene item's enable state has changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| sceneName | String | Name of the scene the item is in |
-| sceneUuid | String | UUID of the scene the item is in |
-| sceneItemId | Number | Numeric ID of the scene item |
+| Name             |  Type   | Description                                 |
+| ---------------- | :-----: | ------------------------------------------- |
+| sceneName        | String  | Name of the scene the item is in            |
+| sceneUuid        | String  | UUID of the scene the item is in            |
+| sceneItemId      | Number  | Numeric ID of the scene item                |
 | sceneItemEnabled | Boolean | Whether the scene item is enabled (visible) |
 
 ---
@@ -2353,11 +2357,11 @@ A scene item's lock state has changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| sceneName | String | Name of the scene the item is in |
-| sceneUuid | String | UUID of the scene the item is in |
-| sceneItemId | Number | Numeric ID of the scene item |
+| Name            |  Type   | Description                      |
+| --------------- | :-----: | -------------------------------- |
+| sceneName       | String  | Name of the scene the item is in |
+| sceneUuid       | String  | UUID of the scene the item is in |
+| sceneItemId     | Number  | Numeric ID of the scene item     |
 | sceneItemLocked | Boolean | Whether the scene item is locked |
 
 ---
@@ -2372,11 +2376,11 @@ A scene item has been selected in the Ui.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| sceneName | String | Name of the scene the item is in |
-| sceneUuid | String | UUID of the scene the item is in |
-| sceneItemId | Number | Numeric ID of the scene item |
+| Name        |  Type  | Description                      |
+| ----------- | :----: | -------------------------------- |
+| sceneName   | String | Name of the scene the item is in |
+| sceneUuid   | String | UUID of the scene the item is in |
+| sceneItemId | Number | Numeric ID of the scene item     |
 
 ---
 
@@ -2390,11 +2394,11 @@ The transform/crop of a scene item has changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| sceneName | String | The name of the scene the item is in |
-| sceneUuid | String | The UUID of the scene the item is in |
-| sceneItemId | Number | Numeric ID of the scene item |
+| Name               |  Type  | Description                               |
+| ------------------ | :----: | ----------------------------------------- |
+| sceneName          | String | The name of the scene the item is in      |
+| sceneUuid          | String | The UUID of the scene the item is in      |
+| sceneItemId        | Number | Numeric ID of the scene item              |
 | sceneItemTransform | Object | New transform/crop info of the scene item |
 
 ## Outputs Events
@@ -2409,10 +2413,10 @@ The state of the stream output has changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| outputActive | Boolean | Whether the output is active |
-| outputState | String | The specific state of the output |
+| Name         |  Type   | Description                      |
+| ------------ | :-----: | -------------------------------- |
+| outputActive | Boolean | Whether the output is active     |
+| outputState  | String  | The specific state of the output |
 
 ---
 
@@ -2426,11 +2430,11 @@ The state of the record output has changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| outputActive | Boolean | Whether the output is active |
-| outputState | String | The specific state of the output |
-| outputPath | String | File name for the saved recording, if record stopped. `null` otherwise |
+| Name         |  Type   | Description                                                            |
+| ------------ | :-----: | ---------------------------------------------------------------------- |
+| outputActive | Boolean | Whether the output is active                                           |
+| outputState  | String  | The specific state of the output                                       |
+| outputPath   | String  | File name for the saved recording, if record stopped. `null` otherwise |
 
 ---
 
@@ -2444,8 +2448,8 @@ The record output has started writing to a new file. For example, when a file sp
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name          |  Type  | Description                                    |
+| ------------- | :----: | ---------------------------------------------- |
 | newOutputPath | String | File name that the output has begun writing to |
 
 ---
@@ -2460,10 +2464,10 @@ The state of the replay buffer output has changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| outputActive | Boolean | Whether the output is active |
-| outputState | String | The specific state of the output |
+| Name         |  Type   | Description                      |
+| ------------ | :-----: | -------------------------------- |
+| outputActive | Boolean | Whether the output is active     |
+| outputState  | String  | The specific state of the output |
 
 ---
 
@@ -2477,10 +2481,10 @@ The state of the virtualcam output has changed.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| outputActive | Boolean | Whether the output is active |
-| outputState | String | The specific state of the output |
+| Name         |  Type   | Description                      |
+| ------------ | :-----: | -------------------------------- |
+| outputActive | Boolean | Whether the output is active     |
+| outputState  | String  | The specific state of the output |
 
 ---
 
@@ -2494,8 +2498,8 @@ The replay buffer has been saved.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name            |  Type  | Description                   |
+| --------------- | :----: | ----------------------------- |
 | savedReplayPath | String | Path of the saved replay file |
 
 ## Media Inputs Events
@@ -2510,8 +2514,8 @@ A media input has started playing.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name      |  Type  | Description       |
+| --------- | :----: | ----------------- |
 | inputName | String | Name of the input |
 | inputUuid | String | UUID of the input |
 
@@ -2527,8 +2531,8 @@ A media input has finished playing.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name      |  Type  | Description       |
+| --------- | :----: | ----------------- |
 | inputName | String | Name of the input |
 | inputUuid | String | UUID of the input |
 
@@ -2544,10 +2548,10 @@ An action has been performed on an input.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| inputName | String | Name of the input |
-| inputUuid | String | UUID of the input |
+| Name        |  Type  | Description                                                   |
+| ----------- | :----: | ------------------------------------------------------------- |
+| inputName   | String | Name of the input                                             |
+| inputUuid   | String | UUID of the input                                             |
 | mediaAction | String | Action performed on the input. See `ObsMediaInputAction` enum |
 
 ## Ui Events
@@ -2562,8 +2566,8 @@ Studio mode has been enabled or disabled.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name              |  Type   | Description                        |
+| ----------------- | :-----: | ---------------------------------- |
 | studioModeEnabled | Boolean | True == Enabled, False == Disabled |
 
 ---
@@ -2582,8 +2586,8 @@ communication is desired.
 
 **Data Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name                |  Type  | Description                  |
+| ------------------- | :----: | ---------------------------- |
 | savedScreenshotPath | String | Path of the saved image file |
 
 # Requests
@@ -2758,15 +2762,15 @@ Gets data about the current plugin and RPC version.
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| obsVersion | String | Current OBS Studio version |
-| obsWebSocketVersion | String | Current obs-websocket version |
-| rpcVersion | Number | Current latest obs-websocket RPC version |
-| availableRequests | Array&lt;String&gt; | Array of available RPC requests for the currently negotiated RPC version |
-| supportedImageFormats | Array&lt;String&gt; | Image formats available in `GetSourceScreenshot` and `SaveSourceScreenshot` requests. |
-| platform | String | Name of the platform. Usually `windows`, `macos`, or `ubuntu` (linux flavor). Not guaranteed to be any of those |
-| platformDescription | String | Description of the platform, like `Windows 10 (10.0)` |
+| Name                  |        Type         | Description                                                                                                     |
+| --------------------- | :-----------------: | --------------------------------------------------------------------------------------------------------------- |
+| obsVersion            |       String        | Current OBS Studio version                                                                                      |
+| obsWebSocketVersion   |       String        | Current obs-websocket version                                                                                   |
+| rpcVersion            |       Number        | Current latest obs-websocket RPC version                                                                        |
+| availableRequests     | Array&lt;String&gt; | Array of available RPC requests for the currently negotiated RPC version                                        |
+| supportedImageFormats | Array&lt;String&gt; | Image formats available in `GetSourceScreenshot` and `SaveSourceScreenshot` requests.                           |
+| platform              |       String        | Name of the platform. Usually `windows`, `macos`, or `ubuntu` (linux flavor). Not guaranteed to be any of those |
+| platformDescription   |       String        | Description of the platform, like `Windows 10 (10.0)`                                                           |
 
 ---
 
@@ -2780,19 +2784,19 @@ Gets statistics about OBS, obs-websocket, and the current session.
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| cpuUsage | Number | Current CPU usage in percent |
-| memoryUsage | Number | Amount of memory in MB currently being used by OBS |
-| availableDiskSpace | Number | Available disk space on the device being used for recording storage |
-| activeFps | Number | Current FPS being rendered |
-| averageFrameRenderTime | Number | Average time in milliseconds that OBS is taking to render a frame |
-| renderSkippedFrames | Number | Number of frames skipped by OBS in the render thread |
-| renderTotalFrames | Number | Total number of frames outputted by the render thread |
-| outputSkippedFrames | Number | Number of frames skipped by OBS in the output thread |
-| outputTotalFrames | Number | Total number of frames outputted by the output thread |
-| webSocketSessionIncomingMessages | Number | Total number of messages received by obs-websocket from the client |
-| webSocketSessionOutgoingMessages | Number | Total number of messages sent by obs-websocket to the client |
+| Name                             |  Type  | Description                                                         |
+| -------------------------------- | :----: | ------------------------------------------------------------------- |
+| cpuUsage                         | Number | Current CPU usage in percent                                        |
+| memoryUsage                      | Number | Amount of memory in MB currently being used by OBS                  |
+| availableDiskSpace               | Number | Available disk space on the device being used for recording storage |
+| activeFps                        | Number | Current FPS being rendered                                          |
+| averageFrameRenderTime           | Number | Average time in milliseconds that OBS is taking to render a frame   |
+| renderSkippedFrames              | Number | Number of frames skipped by OBS in the render thread                |
+| renderTotalFrames                | Number | Total number of frames outputted by the render thread               |
+| outputSkippedFrames              | Number | Number of frames skipped by OBS in the output thread                |
+| outputTotalFrames                | Number | Total number of frames outputted by the output thread               |
+| webSocketSessionIncomingMessages | Number | Total number of messages received by obs-websocket from the client  |
+| webSocketSessionOutgoingMessages | Number | Total number of messages sent by obs-websocket to the client        |
 
 ---
 
@@ -2806,9 +2810,9 @@ Broadcasts a `CustomEvent` to all WebSocket clients. Receivers are clients which
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| eventData | Object | Data payload to emit to all receivers | None | N/A |
+| Name      |  Type  | Description                           | Value Restrictions | ?Default Behavior |
+| --------- | :----: | ------------------------------------- | :----------------: | ----------------- |
+| eventData | Object | Data payload to emit to all receivers |        None        | N/A               |
 
 ---
 
@@ -2825,18 +2829,18 @@ If a plugin or script implements vendor requests or events, documentation is exp
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| vendorName | String | Name of the vendor to use | None | N/A |
-| requestType | String | The request type to call | None | N/A |
-| ?requestData | Object | Object containing appropriate request data | None | {} |
+| Name         |  Type  | Description                                | Value Restrictions | ?Default Behavior |
+| ------------ | :----: | ------------------------------------------ | :----------------: | ----------------- |
+| vendorName   | String | Name of the vendor to use                  |        None        | N/A               |
+| requestType  | String | The request type to call                   |        None        | N/A               |
+| ?requestData | Object | Object containing appropriate request data |        None        | {}                |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| vendorName | String | Echoed of `vendorName` |
-| requestType | String | Echoed of `requestType` |
+| Name         |  Type  | Description                                                                                   |
+| ------------ | :----: | --------------------------------------------------------------------------------------------- |
+| vendorName   | String | Echoed of `vendorName`                                                                        |
+| requestType  | String | Echoed of `requestType`                                                                       |
 | responseData | Object | Object containing appropriate response data. {} if request does not provide any response data |
 
 ---
@@ -2853,8 +2857,8 @@ Note: Hotkey functionality in obs-websocket comes as-is, and we do not guarantee
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name    |        Type         | Description           |
+| ------- | :-----------------: | --------------------- |
 | hotkeys | Array&lt;String&gt; | Array of hotkey names |
 
 ---
@@ -2871,10 +2875,10 @@ Note: Hotkey functionality in obs-websocket comes as-is, and we do not guarantee
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| hotkeyName | String | Name of the hotkey to trigger | None | N/A |
-| ?contextName | String | Name of context of the hotkey to trigger | None | Unknown |
+| Name         |  Type  | Description                              | Value Restrictions | ?Default Behavior |
+| ------------ | :----: | ---------------------------------------- | :----------------: | ----------------- |
+| hotkeyName   | String | Name of the hotkey to trigger            |        None        | N/A               |
+| ?contextName | String | Name of context of the hotkey to trigger |        None        | Unknown           |
 
 ---
 
@@ -2890,14 +2894,14 @@ Note: Hotkey functionality in obs-websocket comes as-is, and we do not guarantee
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?keyId | String | The OBS key ID to use. See https://github.com/obsproject/obs-studio/blob/master/libobs/obs-hotkeys.h | None | Not pressed |
-| ?keyModifiers | Object | Object containing key modifiers to apply | None | Ignored |
-| ?keyModifiers.shift | Boolean | Press Shift | None | Not pressed |
-| ?keyModifiers.control | Boolean | Press CTRL | None | Not pressed |
-| ?keyModifiers.alt | Boolean | Press ALT | None | Not pressed |
-| ?keyModifiers.command | Boolean | Press CMD (Mac) | None | Not pressed |
+| Name                  |  Type   | Description                                                                                          | Value Restrictions | ?Default Behavior |
+| --------------------- | :-----: | ---------------------------------------------------------------------------------------------------- | :----------------: | ----------------- |
+| ?keyId                | String  | The OBS key ID to use. See https://github.com/obsproject/obs-studio/blob/master/libobs/obs-hotkeys.h |        None        | Not pressed       |
+| ?keyModifiers         | Object  | Object containing key modifiers to apply                                                             |        None        | Ignored           |
+| ?keyModifiers.shift   | Boolean | Press Shift                                                                                          |        None        | Not pressed       |
+| ?keyModifiers.control | Boolean | Press CTRL                                                                                           |        None        | Not pressed       |
+| ?keyModifiers.alt     | Boolean | Press ALT                                                                                            |        None        | Not pressed       |
+| ?keyModifiers.command | Boolean | Press CMD (Mac)                                                                                      |        None        | Not pressed       |
 
 ---
 
@@ -2911,10 +2915,10 @@ Sleeps for a time duration or number of frames. Only available in request batche
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sleepMillis | Number | Number of milliseconds to sleep for (if `SERIAL_REALTIME` mode) | >= 0, <= 50000 | Unknown |
-| ?sleepFrames | Number | Number of frames to sleep for (if `SERIAL_FRAME` mode) | >= 0, <= 10000 | Unknown |
+| Name         |  Type  | Description                                                     | Value Restrictions | ?Default Behavior |
+| ------------ | :----: | --------------------------------------------------------------- | :----------------: | ----------------- |
+| ?sleepMillis | Number | Number of milliseconds to sleep for (if `SERIAL_REALTIME` mode) |   >= 0, <= 50000   | Unknown           |
+| ?sleepFrames | Number | Number of frames to sleep for (if `SERIAL_FRAME` mode)          |   >= 0, <= 10000   | Unknown           |
 
 ## Config Requests
 
@@ -2928,16 +2932,16 @@ Gets the value of a "slot" from the selected persistent data realm.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| realm | String | The data realm to select. `OBS_WEBSOCKET_DATA_REALM_GLOBAL` or `OBS_WEBSOCKET_DATA_REALM_PROFILE` | None | N/A |
-| slotName | String | The name of the slot to retrieve data from | None | N/A |
+| Name     |  Type  | Description                                                                                       | Value Restrictions | ?Default Behavior |
+| -------- | :----: | ------------------------------------------------------------------------------------------------- | :----------------: | ----------------- |
+| realm    | String | The data realm to select. `OBS_WEBSOCKET_DATA_REALM_GLOBAL` or `OBS_WEBSOCKET_DATA_REALM_PROFILE` |        None        | N/A               |
+| slotName | String | The name of the slot to retrieve data from                                                        |        None        | N/A               |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| slotValue | Any | Value associated with the slot. `null` if not set |
+| Name      | Type | Description                                       |
+| --------- | :--: | ------------------------------------------------- |
+| slotValue | Any  | Value associated with the slot. `null` if not set |
 
 ---
 
@@ -2951,11 +2955,11 @@ Sets the value of a "slot" from the selected persistent data realm.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| realm | String | The data realm to select. `OBS_WEBSOCKET_DATA_REALM_GLOBAL` or `OBS_WEBSOCKET_DATA_REALM_PROFILE` | None | N/A |
-| slotName | String | The name of the slot to retrieve data from | None | N/A |
-| slotValue | Any | The value to apply to the slot | None | N/A |
+| Name      |  Type  | Description                                                                                       | Value Restrictions | ?Default Behavior |
+| --------- | :----: | ------------------------------------------------------------------------------------------------- | :----------------: | ----------------- |
+| realm     | String | The data realm to select. `OBS_WEBSOCKET_DATA_REALM_GLOBAL` or `OBS_WEBSOCKET_DATA_REALM_PROFILE` |        None        | N/A               |
+| slotName  | String | The name of the slot to retrieve data from                                                        |        None        | N/A               |
+| slotValue |  Any   | The value to apply to the slot                                                                    |        None        | N/A               |
 
 ---
 
@@ -2969,10 +2973,10 @@ Gets an array of all scene collections
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| currentSceneCollectionName | String | The name of the current scene collection |
-| sceneCollections | Array&lt;String&gt; | Array of all available scene collections |
+| Name                       |        Type         | Description                              |
+| -------------------------- | :-----------------: | ---------------------------------------- |
+| currentSceneCollectionName |       String        | The name of the current scene collection |
+| sceneCollections           | Array&lt;String&gt; | Array of all available scene collections |
 
 ---
 
@@ -2988,9 +2992,9 @@ Note: This will block until the collection has finished changing.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| sceneCollectionName | String | Name of the scene collection to switch to | None | N/A |
+| Name                |  Type  | Description                               | Value Restrictions | ?Default Behavior |
+| ------------------- | :----: | ----------------------------------------- | :----------------: | ----------------- |
+| sceneCollectionName | String | Name of the scene collection to switch to |        None        | N/A               |
 
 ---
 
@@ -3006,9 +3010,9 @@ Note: This will block until the collection has finished changing.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| sceneCollectionName | String | Name for the new scene collection | None | N/A |
+| Name                |  Type  | Description                       | Value Restrictions | ?Default Behavior |
+| ------------------- | :----: | --------------------------------- | :----------------: | ----------------- |
+| sceneCollectionName | String | Name for the new scene collection |        None        | N/A               |
 
 ---
 
@@ -3022,10 +3026,10 @@ Gets an array of all profiles
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| currentProfileName | String | The name of the current profile |
-| profiles | Array&lt;String&gt; | Array of all available profiles |
+| Name               |        Type         | Description                     |
+| ------------------ | :-----------------: | ------------------------------- |
+| currentProfileName |       String        | The name of the current profile |
+| profiles           | Array&lt;String&gt; | Array of all available profiles |
 
 ---
 
@@ -3039,9 +3043,9 @@ Switches to a profile.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| profileName | String | Name of the profile to switch to | None | N/A |
+| Name        |  Type  | Description                      | Value Restrictions | ?Default Behavior |
+| ----------- | :----: | -------------------------------- | :----------------: | ----------------- |
+| profileName | String | Name of the profile to switch to |        None        | N/A               |
 
 ---
 
@@ -3055,9 +3059,9 @@ Creates a new profile, switching to it in the process
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| profileName | String | Name for the new profile | None | N/A |
+| Name        |  Type  | Description              | Value Restrictions | ?Default Behavior |
+| ----------- | :----: | ------------------------ | :----------------: | ----------------- |
+| profileName | String | Name for the new profile |        None        | N/A               |
 
 ---
 
@@ -3071,9 +3075,9 @@ Removes a profile. If the current profile is chosen, it will change to a differe
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| profileName | String | Name of the profile to remove | None | N/A |
+| Name        |  Type  | Description                   | Value Restrictions | ?Default Behavior |
+| ----------- | :----: | ----------------------------- | :----------------: | ----------------- |
+| profileName | String | Name of the profile to remove |        None        | N/A               |
 
 ---
 
@@ -3087,17 +3091,17 @@ Gets a parameter from the current profile's configuration.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| parameterCategory | String | Category of the parameter to get | None | N/A |
-| parameterName | String | Name of the parameter to get | None | N/A |
+| Name              |  Type  | Description                      | Value Restrictions | ?Default Behavior |
+| ----------------- | :----: | -------------------------------- | :----------------: | ----------------- |
+| parameterCategory | String | Category of the parameter to get |        None        | N/A               |
+| parameterName     | String | Name of the parameter to get     |        None        | N/A               |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| parameterValue | String | Value associated with the parameter. `null` if not set and no default |
-| defaultParameterValue | String | Default value associated with the parameter. `null` if no default |
+| Name                  |  Type  | Description                                                           |
+| --------------------- | :----: | --------------------------------------------------------------------- |
+| parameterValue        | String | Value associated with the parameter. `null` if not set and no default |
+| defaultParameterValue | String | Default value associated with the parameter. `null` if no default     |
 
 ---
 
@@ -3111,11 +3115,11 @@ Sets the value of a parameter in the current profile's configuration.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| parameterCategory | String | Category of the parameter to set | None | N/A |
-| parameterName | String | Name of the parameter to set | None | N/A |
-| parameterValue | String | Value of the parameter to set. Use `null` to delete | None | N/A |
+| Name              |  Type  | Description                                         | Value Restrictions | ?Default Behavior |
+| ----------------- | :----: | --------------------------------------------------- | :----------------: | ----------------- |
+| parameterCategory | String | Category of the parameter to set                    |        None        | N/A               |
+| parameterName     | String | Name of the parameter to set                        |        None        | N/A               |
+| parameterValue    | String | Value of the parameter to set. Use `null` to delete |        None        | N/A               |
 
 ---
 
@@ -3131,14 +3135,14 @@ Note: To get the true FPS value, divide the FPS numerator by the FPS denominator
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| fpsNumerator | Number | Numerator of the fractional FPS value |
-| fpsDenominator | Number | Denominator of the fractional FPS value |
-| baseWidth | Number | Width of the base (canvas) resolution in pixels |
-| baseHeight | Number | Height of the base (canvas) resolution in pixels |
-| outputWidth | Number | Width of the output resolution in pixels |
-| outputHeight | Number | Height of the output resolution in pixels |
+| Name           |  Type  | Description                                      |
+| -------------- | :----: | ------------------------------------------------ |
+| fpsNumerator   | Number | Numerator of the fractional FPS value            |
+| fpsDenominator | Number | Denominator of the fractional FPS value          |
+| baseWidth      | Number | Width of the base (canvas) resolution in pixels  |
+| baseHeight     | Number | Height of the base (canvas) resolution in pixels |
+| outputWidth    | Number | Width of the output resolution in pixels         |
+| outputHeight   | Number | Height of the output resolution in pixels        |
 
 ---
 
@@ -3154,14 +3158,14 @@ Note: Fields must be specified in pairs. For example, you cannot set only `baseW
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?fpsNumerator | Number | Numerator of the fractional FPS value | >= 1 | Not changed |
-| ?fpsDenominator | Number | Denominator of the fractional FPS value | >= 1 | Not changed |
-| ?baseWidth | Number | Width of the base (canvas) resolution in pixels | >= 1, <= 4096 | Not changed |
-| ?baseHeight | Number | Height of the base (canvas) resolution in pixels | >= 1, <= 4096 | Not changed |
-| ?outputWidth | Number | Width of the output resolution in pixels | >= 1, <= 4096 | Not changed |
-| ?outputHeight | Number | Height of the output resolution in pixels | >= 1, <= 4096 | Not changed |
+| Name            |  Type  | Description                                      | Value Restrictions | ?Default Behavior |
+| --------------- | :----: | ------------------------------------------------ | :----------------: | ----------------- |
+| ?fpsNumerator   | Number | Numerator of the fractional FPS value            |        >= 1        | Not changed       |
+| ?fpsDenominator | Number | Denominator of the fractional FPS value          |        >= 1        | Not changed       |
+| ?baseWidth      | Number | Width of the base (canvas) resolution in pixels  |   >= 1, <= 4096    | Not changed       |
+| ?baseHeight     | Number | Height of the base (canvas) resolution in pixels |   >= 1, <= 4096    | Not changed       |
+| ?outputWidth    | Number | Width of the output resolution in pixels         |   >= 1, <= 4096    | Not changed       |
+| ?outputHeight   | Number | Height of the output resolution in pixels        |   >= 1, <= 4096    | Not changed       |
 
 ---
 
@@ -3175,10 +3179,10 @@ Gets the current stream service settings (stream destination).
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| streamServiceType | String | Stream service type, like `rtmp_custom` or `rtmp_common` |
-| streamServiceSettings | Object | Stream service settings |
+| Name                  |  Type  | Description                                              |
+| --------------------- | :----: | -------------------------------------------------------- |
+| streamServiceType     | String | Stream service type, like `rtmp_custom` or `rtmp_common` |
+| streamServiceSettings | Object | Stream service settings                                  |
 
 ---
 
@@ -3194,10 +3198,10 @@ Note: Simple RTMP settings can be set with type `rtmp_custom` and the settings f
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| streamServiceType | String | Type of stream service to apply. Example: `rtmp_common` or `rtmp_custom` | None | N/A |
-| streamServiceSettings | Object | Settings to apply to the service | None | N/A |
+| Name                  |  Type  | Description                                                              | Value Restrictions | ?Default Behavior |
+| --------------------- | :----: | ------------------------------------------------------------------------ | :----------------: | ----------------- |
+| streamServiceType     | String | Type of stream service to apply. Example: `rtmp_common` or `rtmp_custom` |        None        | N/A               |
+| streamServiceSettings | Object | Settings to apply to the service                                         |        None        | N/A               |
 
 ---
 
@@ -3211,8 +3215,8 @@ Gets the current directory that the record output is set to.
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name            |  Type  | Description      |
+| --------------- | :----: | ---------------- |
 | recordDirectory | String | Output directory |
 
 ---
@@ -3227,9 +3231,9 @@ Sets the current directory that the record output writes files to.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| recordDirectory | String | Output directory | None | N/A |
+| Name            |  Type  | Description      | Value Restrictions | ?Default Behavior |
+| --------------- | :----: | ---------------- | :----------------: | ----------------- |
+| recordDirectory | String | Output directory |        None        | N/A               |
 
 ## Sources Requests
 
@@ -3245,16 +3249,16 @@ Gets the active and show state of a source.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sourceName | String | Name of the source to get the active state of | None | Unknown |
-| ?sourceUuid | String | UUID of the source to get the active state of | None | Unknown |
+| Name        |  Type  | Description                                   | Value Restrictions | ?Default Behavior |
+| ----------- | :----: | --------------------------------------------- | :----------------: | ----------------- |
+| ?sourceName | String | Name of the source to get the active state of |        None        | Unknown           |
+| ?sourceUuid | String | UUID of the source to get the active state of |        None        | Unknown           |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| videoActive | Boolean | Whether the source is showing in Program |
+| Name         |  Type   | Description                                                              |
+| ------------ | :-----: | ------------------------------------------------------------------------ |
+| videoActive  | Boolean | Whether the source is showing in Program                                 |
 | videoShowing | Boolean | Whether the source is showing in the UI (Preview, Projector, Properties) |
 
 ---
@@ -3274,19 +3278,19 @@ If `imageWidth` and `imageHeight` are not specified, the compressed image will u
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sourceName | String | Name of the source to take a screenshot of | None | Unknown |
-| ?sourceUuid | String | UUID of the source to take a screenshot of | None | Unknown |
-| imageFormat | String | Image compression format to use. Use `GetVersion` to get compatible image formats | None | N/A |
-| ?imageWidth | Number | Width to scale the screenshot to | >= 8, <= 4096 | Source value is used |
-| ?imageHeight | Number | Height to scale the screenshot to | >= 8, <= 4096 | Source value is used |
-| ?imageCompressionQuality | Number | Compression quality to use. 0 for high compression, 100 for uncompressed. -1 to use "default" (whatever that means, idk) | >= -1, <= 100 | -1 |
+| Name                     |  Type  | Description                                                                                                              | Value Restrictions | ?Default Behavior    |
+| ------------------------ | :----: | ------------------------------------------------------------------------------------------------------------------------ | :----------------: | -------------------- |
+| ?sourceName              | String | Name of the source to take a screenshot of                                                                               |        None        | Unknown              |
+| ?sourceUuid              | String | UUID of the source to take a screenshot of                                                                               |        None        | Unknown              |
+| imageFormat              | String | Image compression format to use. Use `GetVersion` to get compatible image formats                                        |        None        | N/A                  |
+| ?imageWidth              | Number | Width to scale the screenshot to                                                                                         |   >= 8, <= 4096    | Source value is used |
+| ?imageHeight             | Number | Height to scale the screenshot to                                                                                        |   >= 8, <= 4096    | Source value is used |
+| ?imageCompressionQuality | Number | Compression quality to use. 0 for high compression, 100 for uncompressed. -1 to use "default" (whatever that means, idk) |   >= -1, <= 100    | -1                   |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name      |  Type  | Description               |
+| --------- | :----: | ------------------------- |
 | imageData | String | Base64-encoded screenshot |
 
 ---
@@ -3306,15 +3310,15 @@ If `imageWidth` and `imageHeight` are not specified, the compressed image will u
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sourceName | String | Name of the source to take a screenshot of | None | Unknown |
-| ?sourceUuid | String | UUID of the source to take a screenshot of | None | Unknown |
-| imageFormat | String | Image compression format to use. Use `GetVersion` to get compatible image formats | None | N/A |
-| imageFilePath | String | Path to save the screenshot file to. Eg. `C:\Users\user\Desktop\screenshot.png` | None | N/A |
-| ?imageWidth | Number | Width to scale the screenshot to | >= 8, <= 4096 | Source value is used |
-| ?imageHeight | Number | Height to scale the screenshot to | >= 8, <= 4096 | Source value is used |
-| ?imageCompressionQuality | Number | Compression quality to use. 0 for high compression, 100 for uncompressed. -1 to use "default" (whatever that means, idk) | >= -1, <= 100 | -1 |
+| Name                     |  Type  | Description                                                                                                              | Value Restrictions | ?Default Behavior    |
+| ------------------------ | :----: | ------------------------------------------------------------------------------------------------------------------------ | :----------------: | -------------------- |
+| ?sourceName              | String | Name of the source to take a screenshot of                                                                               |        None        | Unknown              |
+| ?sourceUuid              | String | UUID of the source to take a screenshot of                                                                               |        None        | Unknown              |
+| imageFormat              | String | Image compression format to use. Use `GetVersion` to get compatible image formats                                        |        None        | N/A                  |
+| imageFilePath            | String | Path to save the screenshot file to. Eg. `C:\Users\user\Desktop\screenshot.png`                                          |        None        | N/A                  |
+| ?imageWidth              | Number | Width to scale the screenshot to                                                                                         |   >= 8, <= 4096    | Source value is used |
+| ?imageHeight             | Number | Height to scale the screenshot to                                                                                        |   >= 8, <= 4096    | Source value is used |
+| ?imageCompressionQuality | Number | Compression quality to use. 0 for high compression, 100 for uncompressed. -1 to use "default" (whatever that means, idk) |   >= -1, <= 100    | -1                   |
 
 ## Scenes Requests
 
@@ -3328,13 +3332,13 @@ Gets an array of all scenes in OBS.
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| currentProgramSceneName | String | Current program scene name. Can be `null` if internal state desync |
-| currentProgramSceneUuid | String | Current program scene UUID. Can be `null` if internal state desync |
-| currentPreviewSceneName | String | Current preview scene name. `null` if not in studio mode |
-| currentPreviewSceneUuid | String | Current preview scene UUID. `null` if not in studio mode |
-| scenes | Array&lt;Object&gt; | Array of scenes |
+| Name                    |        Type         | Description                                                        |
+| ----------------------- | :-----------------: | ------------------------------------------------------------------ |
+| currentProgramSceneName |       String        | Current program scene name. Can be `null` if internal state desync |
+| currentProgramSceneUuid |       String        | Current program scene UUID. Can be `null` if internal state desync |
+| currentPreviewSceneName |       String        | Current preview scene name. `null` if not in studio mode           |
+| currentPreviewSceneUuid |       String        | Current preview scene UUID. `null` if not in studio mode           |
+| scenes                  | Array&lt;Object&gt; | Array of scenes                                                    |
 
 ---
 
@@ -3350,8 +3354,8 @@ Groups in OBS are actually scenes, but renamed and modified. In obs-websocket, w
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name   |        Type         | Description          |
+| ------ | :-----------------: | -------------------- |
 | groups | Array&lt;String&gt; | Array of group names |
 
 ---
@@ -3368,10 +3372,10 @@ Note: This request is slated to have the `currentProgram`-prefixed fields remove
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| sceneName | String | Current program scene name |
-| sceneUuid | String | Current program scene UUID |
+| Name                    |  Type  | Description                             |
+| ----------------------- | :----: | --------------------------------------- |
+| sceneName               | String | Current program scene name              |
+| sceneUuid               | String | Current program scene UUID              |
 | currentProgramSceneName | String | Current program scene name (Deprecated) |
 | currentProgramSceneUuid | String | Current program scene UUID (Deprecated) |
 
@@ -3387,10 +3391,10 @@ Sets the current program scene.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Scene name to set as the current program scene | None | Unknown |
-| ?sceneUuid | String | Scene UUID to set as the current program scene | None | Unknown |
+| Name       |  Type  | Description                                    | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | ---------------------------------------------- | :----------------: | ----------------- |
+| ?sceneName | String | Scene name to set as the current program scene |        None        | Unknown           |
+| ?sceneUuid | String | Scene UUID to set as the current program scene |        None        | Unknown           |
 
 ---
 
@@ -3408,10 +3412,10 @@ Note: This request is slated to have the `currentPreview`-prefixed fields remove
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| sceneName | String | Current preview scene name |
-| sceneUuid | String | Current preview scene UUID |
+| Name                    |  Type  | Description                |
+| ----------------------- | :----: | -------------------------- |
+| sceneName               | String | Current preview scene name |
+| sceneUuid               | String | Current preview scene UUID |
 | currentPreviewSceneName | String | Current preview scene name |
 | currentPreviewSceneUuid | String | Current preview scene UUID |
 
@@ -3429,10 +3433,10 @@ Only available when studio mode is enabled.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Scene name to set as the current preview scene | None | Unknown |
-| ?sceneUuid | String | Scene UUID to set as the current preview scene | None | Unknown |
+| Name       |  Type  | Description                                    | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | ---------------------------------------------- | :----------------: | ----------------- |
+| ?sceneName | String | Scene name to set as the current preview scene |        None        | Unknown           |
+| ?sceneUuid | String | Scene UUID to set as the current preview scene |        None        | Unknown           |
 
 ---
 
@@ -3446,14 +3450,14 @@ Creates a new scene in OBS.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| sceneName | String | Name for the new scene | None | N/A |
+| Name      |  Type  | Description            | Value Restrictions | ?Default Behavior |
+| --------- | :----: | ---------------------- | :----------------: | ----------------- |
+| sceneName | String | Name for the new scene |        None        | N/A               |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name      |  Type  | Description               |
+| --------- | :----: | ------------------------- |
 | sceneUuid | String | UUID of the created scene |
 
 ---
@@ -3468,10 +3472,10 @@ Removes a scene from OBS.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Name of the scene to remove | None | Unknown |
-| ?sceneUuid | String | UUID of the scene to remove | None | Unknown |
+| Name       |  Type  | Description                 | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | --------------------------- | :----------------: | ----------------- |
+| ?sceneName | String | Name of the scene to remove |        None        | Unknown           |
+| ?sceneUuid | String | UUID of the scene to remove |        None        | Unknown           |
 
 ---
 
@@ -3485,11 +3489,11 @@ Sets the name of a scene (rename).
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Name of the scene to be renamed | None | Unknown |
-| ?sceneUuid | String | UUID of the scene to be renamed | None | Unknown |
-| newSceneName | String | New name for the scene | None | N/A |
+| Name         |  Type  | Description                     | Value Restrictions | ?Default Behavior |
+| ------------ | :----: | ------------------------------- | :----------------: | ----------------- |
+| ?sceneName   | String | Name of the scene to be renamed |        None        | Unknown           |
+| ?sceneUuid   | String | UUID of the scene to be renamed |        None        | Unknown           |
+| newSceneName | String | New name for the scene          |        None        | N/A               |
 
 ---
 
@@ -3505,16 +3509,16 @@ Note: A transition UUID response field is not currently able to be implemented a
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Name of the scene | None | Unknown |
-| ?sceneUuid | String | UUID of the scene | None | Unknown |
+| Name       |  Type  | Description       | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | ----------------- | :----------------: | ----------------- |
+| ?sceneName | String | Name of the scene |        None        | Unknown           |
+| ?sceneUuid | String | UUID of the scene |        None        | Unknown           |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| transitionName | String | Name of the overridden scene transition, else `null` |
+| Name               |  Type  | Description                                              |
+| ------------------ | :----: | -------------------------------------------------------- |
+| transitionName     | String | Name of the overridden scene transition, else `null`     |
 | transitionDuration | Number | Duration of the overridden scene transition, else `null` |
 
 ---
@@ -3529,12 +3533,12 @@ Sets the scene transition overridden for a scene.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Name of the scene | None | Unknown |
-| ?sceneUuid | String | UUID of the scene | None | Unknown |
-| ?transitionName | String | Name of the scene transition to use as override. Specify `null` to remove | None | Unchanged |
-| ?transitionDuration | Number | Duration to use for any overridden transition. Specify `null` to remove | >= 50, <= 20000 | Unchanged |
+| Name                |  Type  | Description                                                               | Value Restrictions | ?Default Behavior |
+| ------------------- | :----: | ------------------------------------------------------------------------- | :----------------: | ----------------- |
+| ?sceneName          | String | Name of the scene                                                         |        None        | Unknown           |
+| ?sceneUuid          | String | UUID of the scene                                                         |        None        | Unknown           |
+| ?transitionName     | String | Name of the scene transition to use as override. Specify `null` to remove |        None        | Unchanged         |
+| ?transitionDuration | Number | Duration to use for any overridden transition. Specify `null` to remove   |  >= 50, <= 20000   | Unchanged         |
 
 ## Inputs Requests
 
@@ -3548,14 +3552,14 @@ Gets an array of all inputs in OBS.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputKind | String | Restrict the array to only inputs of the specified kind | None | All kinds included |
+| Name       |  Type  | Description                                             | Value Restrictions | ?Default Behavior  |
+| ---------- | :----: | ------------------------------------------------------- | :----------------: | ------------------ |
+| ?inputKind | String | Restrict the array to only inputs of the specified kind |        None        | All kinds included |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name   |        Type         | Description     |
+| ------ | :-----------------: | --------------- |
 | inputs | Array&lt;Object&gt; | Array of inputs |
 
 ---
@@ -3570,14 +3574,14 @@ Gets an array of all available input kinds in OBS.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?unversioned | Boolean | True == Return all kinds as unversioned, False == Return with version suffixes (if available) | None | false |
+| Name         |  Type   | Description                                                                                   | Value Restrictions | ?Default Behavior |
+| ------------ | :-----: | --------------------------------------------------------------------------------------------- | :----------------: | ----------------- |
+| ?unversioned | Boolean | True == Return all kinds as unversioned, False == Return with version suffixes (if available) |        None        | false             |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name       |        Type         | Description          |
+| ---------- | :-----------------: | -------------------- |
 | inputKinds | Array&lt;String&gt; | Array of input kinds |
 
 ---
@@ -3592,14 +3596,14 @@ Gets the names of all special inputs.
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| desktop1 | String | Name of the Desktop Audio input |
-| desktop2 | String | Name of the Desktop Audio 2 input |
-| mic1 | String | Name of the Mic/Auxiliary Audio input |
-| mic2 | String | Name of the Mic/Auxiliary Audio 2 input |
-| mic3 | String | Name of the Mic/Auxiliary Audio 3 input |
-| mic4 | String | Name of the Mic/Auxiliary Audio 4 input |
+| Name     |  Type  | Description                             |
+| -------- | :----: | --------------------------------------- |
+| desktop1 | String | Name of the Desktop Audio input         |
+| desktop2 | String | Name of the Desktop Audio 2 input       |
+| mic1     | String | Name of the Mic/Auxiliary Audio input   |
+| mic2     | String | Name of the Mic/Auxiliary Audio 2 input |
+| mic3     | String | Name of the Mic/Auxiliary Audio 3 input |
+| mic4     | String | Name of the Mic/Auxiliary Audio 4 input |
 
 ---
 
@@ -3613,20 +3617,20 @@ Creates a new input, adding it as a scene item to the specified scene.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Name of the scene to add the input to as a scene item | None | Unknown |
-| ?sceneUuid | String | UUID of the scene to add the input to as a scene item | None | Unknown |
-| inputName | String | Name of the new input to created | None | N/A |
-| inputKind | String | The kind of input to be created | None | N/A |
-| ?inputSettings | Object | Settings object to initialize the input with | None | Default settings used |
-| ?sceneItemEnabled | Boolean | Whether to set the created scene item to enabled or disabled | None | True |
+| Name              |  Type   | Description                                                  | Value Restrictions | ?Default Behavior     |
+| ----------------- | :-----: | ------------------------------------------------------------ | :----------------: | --------------------- |
+| ?sceneName        | String  | Name of the scene to add the input to as a scene item        |        None        | Unknown               |
+| ?sceneUuid        | String  | UUID of the scene to add the input to as a scene item        |        None        | Unknown               |
+| inputName         | String  | Name of the new input to created                             |        None        | N/A                   |
+| inputKind         | String  | The kind of input to be created                              |        None        | N/A                   |
+| ?inputSettings    | Object  | Settings object to initialize the input with                 |        None        | Default settings used |
+| ?sceneItemEnabled | Boolean | Whether to set the created scene item to enabled or disabled |        None        | True                  |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| inputUuid | String | UUID of the newly created input |
+| Name        |  Type  | Description                        |
+| ----------- | :----: | ---------------------------------- |
+| inputUuid   | String | UUID of the newly created input    |
 | sceneItemId | Number | ID of the newly created scene item |
 
 ---
@@ -3643,10 +3647,10 @@ Note: Will immediately remove all associated scene items.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the input to remove | None | Unknown |
-| ?inputUuid | String | UUID of the input to remove | None | Unknown |
+| Name       |  Type  | Description                 | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | --------------------------- | :----------------: | ----------------- |
+| ?inputName | String | Name of the input to remove |        None        | Unknown           |
+| ?inputUuid | String | UUID of the input to remove |        None        | Unknown           |
 
 ---
 
@@ -3660,11 +3664,11 @@ Sets the name of an input (rename).
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Current input name | None | Unknown |
-| ?inputUuid | String | Current input UUID | None | Unknown |
-| newInputName | String | New name for the input | None | N/A |
+| Name         |  Type  | Description            | Value Restrictions | ?Default Behavior |
+| ------------ | :----: | ---------------------- | :----------------: | ----------------- |
+| ?inputName   | String | Current input name     |        None        | Unknown           |
+| ?inputUuid   | String | Current input UUID     |        None        | Unknown           |
+| newInputName | String | New name for the input |        None        | N/A               |
 
 ---
 
@@ -3678,14 +3682,14 @@ Gets the default settings for an input kind.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| inputKind | String | Input kind to get the default settings for | None | N/A |
+| Name      |  Type  | Description                                | Value Restrictions | ?Default Behavior |
+| --------- | :----: | ------------------------------------------ | :----------------: | ----------------- |
+| inputKind | String | Input kind to get the default settings for |        None        | N/A               |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name                 |  Type  | Description                                   |
+| -------------------- | :----: | --------------------------------------------- |
 | defaultInputSettings | Object | Object of default settings for the input kind |
 
 ---
@@ -3702,17 +3706,17 @@ Note: Does not include defaults. To create the entire settings object, overlay `
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the input to get the settings of | None | Unknown |
-| ?inputUuid | String | UUID of the input to get the settings of | None | Unknown |
+| Name       |  Type  | Description                              | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | ---------------------------------------- | :----------------: | ----------------- |
+| ?inputName | String | Name of the input to get the settings of |        None        | Unknown           |
+| ?inputUuid | String | UUID of the input to get the settings of |        None        | Unknown           |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name          |  Type  | Description                      |
+| ------------- | :----: | -------------------------------- |
 | inputSettings | Object | Object of settings for the input |
-| inputKind | String | The kind of the input |
+| inputKind     | String | The kind of the input            |
 
 ---
 
@@ -3726,12 +3730,12 @@ Sets the settings of an input.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the input to set the settings of | None | Unknown |
-| ?inputUuid | String | UUID of the input to set the settings of | None | Unknown |
-| inputSettings | Object | Object of settings to apply | None | N/A |
-| ?overlay | Boolean | True == apply the settings on top of existing ones, False == reset the input to its defaults, then apply settings. | None | true |
+| Name          |  Type   | Description                                                                                                        | Value Restrictions | ?Default Behavior |
+| ------------- | :-----: | ------------------------------------------------------------------------------------------------------------------ | :----------------: | ----------------- |
+| ?inputName    | String  | Name of the input to set the settings of                                                                           |        None        | Unknown           |
+| ?inputUuid    | String  | UUID of the input to set the settings of                                                                           |        None        | Unknown           |
+| inputSettings | Object  | Object of settings to apply                                                                                        |        None        | N/A               |
+| ?overlay      | Boolean | True == apply the settings on top of existing ones, False == reset the input to its defaults, then apply settings. |        None        | true              |
 
 ---
 
@@ -3745,15 +3749,15 @@ Gets the audio mute state of an input.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of input to get the mute state of | None | Unknown |
-| ?inputUuid | String | UUID of input to get the mute state of | None | Unknown |
+| Name       |  Type  | Description                            | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | -------------------------------------- | :----------------: | ----------------- |
+| ?inputName | String | Name of input to get the mute state of |        None        | Unknown           |
+| ?inputUuid | String | UUID of input to get the mute state of |        None        | Unknown           |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name       |  Type   | Description                |
+| ---------- | :-----: | -------------------------- |
 | inputMuted | Boolean | Whether the input is muted |
 
 ---
@@ -3768,11 +3772,11 @@ Sets the audio mute state of an input.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the input to set the mute state of | None | Unknown |
-| ?inputUuid | String | UUID of the input to set the mute state of | None | Unknown |
-| inputMuted | Boolean | Whether to mute the input or not | None | N/A |
+| Name       |  Type   | Description                                | Value Restrictions | ?Default Behavior |
+| ---------- | :-----: | ------------------------------------------ | :----------------: | ----------------- |
+| ?inputName | String  | Name of the input to set the mute state of |        None        | Unknown           |
+| ?inputUuid | String  | UUID of the input to set the mute state of |        None        | Unknown           |
+| inputMuted | Boolean | Whether to mute the input or not           |        None        | N/A               |
 
 ---
 
@@ -3786,15 +3790,15 @@ Toggles the audio mute state of an input.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the input to toggle the mute state of | None | Unknown |
-| ?inputUuid | String | UUID of the input to toggle the mute state of | None | Unknown |
+| Name       |  Type  | Description                                   | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | --------------------------------------------- | :----------------: | ----------------- |
+| ?inputName | String | Name of the input to toggle the mute state of |        None        | Unknown           |
+| ?inputUuid | String | UUID of the input to toggle the mute state of |        None        | Unknown           |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name       |  Type   | Description                                 |
+| ---------- | :-----: | ------------------------------------------- |
 | inputMuted | Boolean | Whether the input has been muted or unmuted |
 
 ---
@@ -3809,17 +3813,17 @@ Gets the current volume setting of an input.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the input to get the volume of | None | Unknown |
-| ?inputUuid | String | UUID of the input to get the volume of | None | Unknown |
+| Name       |  Type  | Description                            | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | -------------------------------------- | :----------------: | ----------------- |
+| ?inputName | String | Name of the input to get the volume of |        None        | Unknown           |
+| ?inputUuid | String | UUID of the input to get the volume of |        None        | Unknown           |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name           |  Type  | Description           |
+| -------------- | :----: | --------------------- |
 | inputVolumeMul | Number | Volume setting in mul |
-| inputVolumeDb | Number | Volume setting in dB |
+| inputVolumeDb  | Number | Volume setting in dB  |
 
 ---
 
@@ -3833,12 +3837,12 @@ Sets the volume setting of an input.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the input to set the volume of | None | Unknown |
-| ?inputUuid | String | UUID of the input to set the volume of | None | Unknown |
-| ?inputVolumeMul | Number | Volume setting in mul | >= 0, <= 20 | `inputVolumeDb` should be specified |
-| ?inputVolumeDb | Number | Volume setting in dB | >= -100, <= 26 | `inputVolumeMul` should be specified |
+| Name            |  Type  | Description                            | Value Restrictions | ?Default Behavior                    |
+| --------------- | :----: | -------------------------------------- | :----------------: | ------------------------------------ |
+| ?inputName      | String | Name of the input to set the volume of |        None        | Unknown                              |
+| ?inputUuid      | String | UUID of the input to set the volume of |        None        | Unknown                              |
+| ?inputVolumeMul | Number | Volume setting in mul                  |    >= 0, <= 20     | `inputVolumeDb` should be specified  |
+| ?inputVolumeDb  | Number | Volume setting in dB                   |   >= -100, <= 26   | `inputVolumeMul` should be specified |
 
 ---
 
@@ -3852,15 +3856,15 @@ Gets the audio balance of an input.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the input to get the audio balance of | None | Unknown |
-| ?inputUuid | String | UUID of the input to get the audio balance of | None | Unknown |
+| Name       |  Type  | Description                                   | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | --------------------------------------------- | :----------------: | ----------------- |
+| ?inputName | String | Name of the input to get the audio balance of |        None        | Unknown           |
+| ?inputUuid | String | UUID of the input to get the audio balance of |        None        | Unknown           |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name              |  Type  | Description                      |
+| ----------------- | :----: | -------------------------------- |
 | inputAudioBalance | Number | Audio balance value from 0.0-1.0 |
 
 ---
@@ -3875,11 +3879,11 @@ Sets the audio balance of an input.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the input to set the audio balance of | None | Unknown |
-| ?inputUuid | String | UUID of the input to set the audio balance of | None | Unknown |
-| inputAudioBalance | Number | New audio balance value | >= 0.0, <= 1.0 | N/A |
+| Name              |  Type  | Description                                   | Value Restrictions | ?Default Behavior |
+| ----------------- | :----: | --------------------------------------------- | :----------------: | ----------------- |
+| ?inputName        | String | Name of the input to set the audio balance of |        None        | Unknown           |
+| ?inputUuid        | String | UUID of the input to set the audio balance of |        None        | Unknown           |
+| inputAudioBalance | Number | New audio balance value                       |   >= 0.0, <= 1.0   | N/A               |
 
 ---
 
@@ -3895,15 +3899,15 @@ Note: The audio sync offset can be negative too!
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the input to get the audio sync offset of | None | Unknown |
-| ?inputUuid | String | UUID of the input to get the audio sync offset of | None | Unknown |
+| Name       |  Type  | Description                                       | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | ------------------------------------------------- | :----------------: | ----------------- |
+| ?inputName | String | Name of the input to get the audio sync offset of |        None        | Unknown           |
+| ?inputUuid | String | UUID of the input to get the audio sync offset of |        None        | Unknown           |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name                 |  Type  | Description                       |
+| -------------------- | :----: | --------------------------------- |
 | inputAudioSyncOffset | Number | Audio sync offset in milliseconds |
 
 ---
@@ -3918,11 +3922,11 @@ Sets the audio sync offset of an input.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the input to set the audio sync offset of | None | Unknown |
-| ?inputUuid | String | UUID of the input to set the audio sync offset of | None | Unknown |
-| inputAudioSyncOffset | Number | New audio sync offset in milliseconds | >= -950, <= 20000 | N/A |
+| Name                 |  Type  | Description                                       | Value Restrictions | ?Default Behavior |
+| -------------------- | :----: | ------------------------------------------------- | :----------------: | ----------------- |
+| ?inputName           | String | Name of the input to set the audio sync offset of |        None        | Unknown           |
+| ?inputUuid           | String | UUID of the input to set the audio sync offset of |        None        | Unknown           |
+| inputAudioSyncOffset | Number | New audio sync offset in milliseconds             | >= -950, <= 20000  | N/A               |
 
 ---
 
@@ -3942,15 +3946,15 @@ The available audio monitor types are:
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the input to get the audio monitor type of | None | Unknown |
-| ?inputUuid | String | UUID of the input to get the audio monitor type of | None | Unknown |
+| Name       |  Type  | Description                                        | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | -------------------------------------------------- | :----------------: | ----------------- |
+| ?inputName | String | Name of the input to get the audio monitor type of |        None        | Unknown           |
+| ?inputUuid | String | UUID of the input to get the audio monitor type of |        None        | Unknown           |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name        |  Type  | Description        |
+| ----------- | :----: | ------------------ |
 | monitorType | String | Audio monitor type |
 
 ---
@@ -3965,11 +3969,11 @@ Sets the audio monitor type of an input.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the input to set the audio monitor type of | None | Unknown |
-| ?inputUuid | String | UUID of the input to set the audio monitor type of | None | Unknown |
-| monitorType | String | Audio monitor type | None | N/A |
+| Name        |  Type  | Description                                        | Value Restrictions | ?Default Behavior |
+| ----------- | :----: | -------------------------------------------------- | :----------------: | ----------------- |
+| ?inputName  | String | Name of the input to set the audio monitor type of |        None        | Unknown           |
+| ?inputUuid  | String | UUID of the input to set the audio monitor type of |        None        | Unknown           |
+| monitorType | String | Audio monitor type                                 |        None        | N/A               |
 
 ---
 
@@ -3983,15 +3987,15 @@ Gets the enable state of all audio tracks of an input.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the input | None | Unknown |
-| ?inputUuid | String | UUID of the input | None | Unknown |
+| Name       |  Type  | Description       | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | ----------------- | :----------------: | ----------------- |
+| ?inputName | String | Name of the input |        None        | Unknown           |
+| ?inputUuid | String | UUID of the input |        None        | Unknown           |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name             |  Type  | Description                                         |
+| ---------------- | :----: | --------------------------------------------------- |
 | inputAudioTracks | Object | Object of audio tracks and associated enable states |
 
 ---
@@ -4006,11 +4010,11 @@ Sets the enable state of audio tracks of an input.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the input | None | Unknown |
-| ?inputUuid | String | UUID of the input | None | Unknown |
-| inputAudioTracks | Object | Track settings to apply | None | N/A |
+| Name             |  Type  | Description             | Value Restrictions | ?Default Behavior |
+| ---------------- | :----: | ----------------------- | :----------------: | ----------------- |
+| ?inputName       | String | Name of the input       |        None        | Unknown           |
+| ?inputUuid       | String | UUID of the input       |        None        | Unknown           |
+| inputAudioTracks | Object | Track settings to apply |        None        | N/A               |
 
 ---
 
@@ -4026,16 +4030,16 @@ Note: Use this in cases where an input provides a dynamic, selectable list of it
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the input | None | Unknown |
-| ?inputUuid | String | UUID of the input | None | Unknown |
-| propertyName | String | Name of the list property to get the items of | None | N/A |
+| Name         |  Type  | Description                                   | Value Restrictions | ?Default Behavior |
+| ------------ | :----: | --------------------------------------------- | :----------------: | ----------------- |
+| ?inputName   | String | Name of the input                             |        None        | Unknown           |
+| ?inputUuid   | String | UUID of the input                             |        None        | Unknown           |
+| propertyName | String | Name of the list property to get the items of |        None        | N/A               |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name          |        Type         | Description                         |
+| ------------- | :-----------------: | ----------------------------------- |
 | propertyItems | Array&lt;Object&gt; | Array of items in the list property |
 
 ---
@@ -4056,11 +4060,11 @@ Note: Use this in cases where there is a button in the properties of an input th
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the input | None | Unknown |
-| ?inputUuid | String | UUID of the input | None | Unknown |
-| propertyName | String | Name of the button property to press | None | N/A |
+| Name         |  Type  | Description                          | Value Restrictions | ?Default Behavior |
+| ------------ | :----: | ------------------------------------ | :----------------: | ----------------- |
+| ?inputName   | String | Name of the input                    |        None        | Unknown           |
+| ?inputUuid   | String | UUID of the input                    |        None        | Unknown           |
+| propertyName | String | Name of the button property to press |        None        | N/A               |
 
 ## Transitions Requests
 
@@ -4076,8 +4080,8 @@ Similar to `GetInputKindList`
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name            |        Type         | Description               |
+| --------------- | :-----------------: | ------------------------- |
 | transitionKinds | Array&lt;String&gt; | Array of transition kinds |
 
 ---
@@ -4092,12 +4096,12 @@ Gets an array of all scene transitions in OBS.
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| currentSceneTransitionName | String | Name of the current scene transition. Can be null |
-| currentSceneTransitionUuid | String | UUID of the current scene transition. Can be null |
-| currentSceneTransitionKind | String | Kind of the current scene transition. Can be null |
-| transitions | Array&lt;Object&gt; | Array of transitions |
+| Name                       |        Type         | Description                                       |
+| -------------------------- | :-----------------: | ------------------------------------------------- |
+| currentSceneTransitionName |       String        | Name of the current scene transition. Can be null |
+| currentSceneTransitionUuid |       String        | UUID of the current scene transition. Can be null |
+| currentSceneTransitionKind |       String        | Kind of the current scene transition. Can be null |
+| transitions                | Array&lt;Object&gt; | Array of transitions                              |
 
 ---
 
@@ -4111,15 +4115,15 @@ Gets information about the current scene transition.
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| transitionName | String | Name of the transition |
-| transitionUuid | String | UUID of the transition |
-| transitionKind | String | Kind of the transition |
-| transitionFixed | Boolean | Whether the transition uses a fixed (unconfigurable) duration |
-| transitionDuration | Number | Configured transition duration in milliseconds. `null` if transition is fixed |
-| transitionConfigurable | Boolean | Whether the transition supports being configured |
-| transitionSettings | Object | Object of settings for the transition. `null` if transition is not configurable |
+| Name                   |  Type   | Description                                                                     |
+| ---------------------- | :-----: | ------------------------------------------------------------------------------- |
+| transitionName         | String  | Name of the transition                                                          |
+| transitionUuid         | String  | UUID of the transition                                                          |
+| transitionKind         | String  | Kind of the transition                                                          |
+| transitionFixed        | Boolean | Whether the transition uses a fixed (unconfigurable) duration                   |
+| transitionDuration     | Number  | Configured transition duration in milliseconds. `null` if transition is fixed   |
+| transitionConfigurable | Boolean | Whether the transition supports being configured                                |
+| transitionSettings     | Object  | Object of settings for the transition. `null` if transition is not configurable |
 
 ---
 
@@ -4135,9 +4139,9 @@ Small note: While the namespace of scene transitions is generally unique, that u
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| transitionName | String | Name of the transition to make active | None | N/A |
+| Name           |  Type  | Description                           | Value Restrictions | ?Default Behavior |
+| -------------- | :----: | ------------------------------------- | :----------------: | ----------------- |
+| transitionName | String | Name of the transition to make active |        None        | N/A               |
 
 ---
 
@@ -4151,9 +4155,9 @@ Sets the duration of the current scene transition, if it is not fixed.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| transitionDuration | Number | Duration in milliseconds | >= 50, <= 20000 | N/A |
+| Name               |  Type  | Description              | Value Restrictions | ?Default Behavior |
+| ------------------ | :----: | ------------------------ | :----------------: | ----------------- |
+| transitionDuration | Number | Duration in milliseconds |  >= 50, <= 20000   | N/A               |
 
 ---
 
@@ -4167,10 +4171,10 @@ Sets the settings of the current scene transition.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| transitionSettings | Object | Settings object to apply to the transition. Can be `{}` | None | N/A |
-| ?overlay | Boolean | Whether to overlay over the current settings or replace them | None | true |
+| Name               |  Type   | Description                                                  | Value Restrictions | ?Default Behavior |
+| ------------------ | :-----: | ------------------------------------------------------------ | :----------------: | ----------------- |
+| transitionSettings | Object  | Settings object to apply to the transition. Can be `{}`      |        None        | N/A               |
+| ?overlay           | Boolean | Whether to overlay over the current settings or replace them |        None        | true              |
 
 ---
 
@@ -4186,8 +4190,8 @@ Note: `transitionCursor` will return 1.0 when the transition is inactive.
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name             |  Type  | Description                          |
+| ---------------- | :----: | ------------------------------------ |
 | transitionCursor | Number | Cursor position, between 0.0 and 1.0 |
 
 ---
@@ -4214,10 +4218,10 @@ Sets the position of the TBar.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| position | Number | New position | >= 0.0, <= 1.0 | N/A |
-| ?release | Boolean | Whether to release the TBar. Only set `false` if you know that you will be sending another position update | None | `true` |
+| Name     |  Type   | Description                                                                                                | Value Restrictions | ?Default Behavior |
+| -------- | :-----: | ---------------------------------------------------------------------------------------------------------- | :----------------: | ----------------- |
+| position | Number  | New position                                                                                               |   >= 0.0, <= 1.0   | N/A               |
+| ?release | Boolean | Whether to release the TBar. Only set `false` if you know that you will be sending another position update |        None        | `true`            |
 
 ## Filters Requests
 
@@ -4233,8 +4237,8 @@ Similar to `GetInputKindList`
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name              |        Type         | Description                  |
+| ----------------- | :-----------------: | ---------------------------- |
 | sourceFilterKinds | Array&lt;String&gt; | Array of source filter kinds |
 
 ---
@@ -4249,15 +4253,15 @@ Gets an array of all of a source's filters.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sourceName | String | Name of the source | None | Unknown |
-| ?sourceUuid | String | UUID of the source | None | Unknown |
+| Name        |  Type  | Description        | Value Restrictions | ?Default Behavior |
+| ----------- | :----: | ------------------ | :----------------: | ----------------- |
+| ?sourceName | String | Name of the source |        None        | Unknown           |
+| ?sourceUuid | String | UUID of the source |        None        | Unknown           |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name    |        Type         | Description      |
+| ------- | :-----------------: | ---------------- |
 | filters | Array&lt;Object&gt; | Array of filters |
 
 ---
@@ -4272,14 +4276,14 @@ Gets the default settings for a filter kind.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| filterKind | String | Filter kind to get the default settings for | None | N/A |
+| Name       |  Type  | Description                                 | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | ------------------------------------------- | :----------------: | ----------------- |
+| filterKind | String | Filter kind to get the default settings for |        None        | N/A               |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name                  |  Type  | Description                                    |
+| --------------------- | :----: | ---------------------------------------------- |
 | defaultFilterSettings | Object | Object of default settings for the filter kind |
 
 ---
@@ -4294,13 +4298,13 @@ Creates a new filter, adding it to the specified source.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sourceName | String | Name of the source to add the filter to | None | Unknown |
-| ?sourceUuid | String | UUID of the source to add the filter to | None | Unknown |
-| filterName | String | Name of the new filter to be created | None | N/A |
-| filterKind | String | The kind of filter to be created | None | N/A |
-| ?filterSettings | Object | Settings object to initialize the filter with | None | Default settings used |
+| Name            |  Type  | Description                                   | Value Restrictions | ?Default Behavior     |
+| --------------- | :----: | --------------------------------------------- | :----------------: | --------------------- |
+| ?sourceName     | String | Name of the source to add the filter to       |        None        | Unknown               |
+| ?sourceUuid     | String | UUID of the source to add the filter to       |        None        | Unknown               |
+| filterName      | String | Name of the new filter to be created          |        None        | N/A                   |
+| filterKind      | String | The kind of filter to be created              |        None        | N/A                   |
+| ?filterSettings | Object | Settings object to initialize the filter with |        None        | Default settings used |
 
 ---
 
@@ -4314,11 +4318,11 @@ Removes a filter from a source.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sourceName | String | Name of the source the filter is on | None | Unknown |
-| ?sourceUuid | String | UUID of the source the filter is on | None | Unknown |
-| filterName | String | Name of the filter to remove | None | N/A |
+| Name        |  Type  | Description                         | Value Restrictions | ?Default Behavior |
+| ----------- | :----: | ----------------------------------- | :----------------: | ----------------- |
+| ?sourceName | String | Name of the source the filter is on |        None        | Unknown           |
+| ?sourceUuid | String | UUID of the source the filter is on |        None        | Unknown           |
+| filterName  | String | Name of the filter to remove        |        None        | N/A               |
 
 ---
 
@@ -4332,12 +4336,12 @@ Sets the name of a source filter (rename).
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sourceName | String | Name of the source the filter is on | None | Unknown |
-| ?sourceUuid | String | UUID of the source the filter is on | None | Unknown |
-| filterName | String | Current name of the filter | None | N/A |
-| newFilterName | String | New name for the filter | None | N/A |
+| Name          |  Type  | Description                         | Value Restrictions | ?Default Behavior |
+| ------------- | :----: | ----------------------------------- | :----------------: | ----------------- |
+| ?sourceName   | String | Name of the source the filter is on |        None        | Unknown           |
+| ?sourceUuid   | String | UUID of the source the filter is on |        None        | Unknown           |
+| filterName    | String | Current name of the filter          |        None        | N/A               |
+| newFilterName | String | New name for the filter             |        None        | N/A               |
 
 ---
 
@@ -4351,20 +4355,20 @@ Gets the info for a specific source filter.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sourceName | String | Name of the source | None | Unknown |
-| ?sourceUuid | String | UUID of the source | None | Unknown |
-| filterName | String | Name of the filter | None | N/A |
+| Name        |  Type  | Description        | Value Restrictions | ?Default Behavior |
+| ----------- | :----: | ------------------ | :----------------: | ----------------- |
+| ?sourceName | String | Name of the source |        None        | Unknown           |
+| ?sourceUuid | String | UUID of the source |        None        | Unknown           |
+| filterName  | String | Name of the filter |        None        | N/A               |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| filterEnabled | Boolean | Whether the filter is enabled |
-| filterIndex | Number | Index of the filter in the list, beginning at 0 |
-| filterKind | String | The kind of filter |
-| filterSettings | Object | Settings object associated with the filter |
+| Name           |  Type   | Description                                     |
+| -------------- | :-----: | ----------------------------------------------- |
+| filterEnabled  | Boolean | Whether the filter is enabled                   |
+| filterIndex    | Number  | Index of the filter in the list, beginning at 0 |
+| filterKind     | String  | The kind of filter                              |
+| filterSettings | Object  | Settings object associated with the filter      |
 
 ---
 
@@ -4378,12 +4382,12 @@ Sets the index position of a filter on a source.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sourceName | String | Name of the source the filter is on | None | Unknown |
-| ?sourceUuid | String | UUID of the source the filter is on | None | Unknown |
-| filterName | String | Name of the filter | None | N/A |
-| filterIndex | Number | New index position of the filter | >= 0 | N/A |
+| Name        |  Type  | Description                         | Value Restrictions | ?Default Behavior |
+| ----------- | :----: | ----------------------------------- | :----------------: | ----------------- |
+| ?sourceName | String | Name of the source the filter is on |        None        | Unknown           |
+| ?sourceUuid | String | UUID of the source the filter is on |        None        | Unknown           |
+| filterName  | String | Name of the filter                  |        None        | N/A               |
+| filterIndex | Number | New index position of the filter    |        >= 0        | N/A               |
 
 ---
 
@@ -4397,13 +4401,13 @@ Sets the settings of a source filter.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sourceName | String | Name of the source the filter is on | None | Unknown |
-| ?sourceUuid | String | UUID of the source the filter is on | None | Unknown |
-| filterName | String | Name of the filter to set the settings of | None | N/A |
-| filterSettings | Object | Object of settings to apply | None | N/A |
-| ?overlay | Boolean | True == apply the settings on top of existing ones, False == reset the input to its defaults, then apply settings. | None | true |
+| Name           |  Type   | Description                                                                                                        | Value Restrictions | ?Default Behavior |
+| -------------- | :-----: | ------------------------------------------------------------------------------------------------------------------ | :----------------: | ----------------- |
+| ?sourceName    | String  | Name of the source the filter is on                                                                                |        None        | Unknown           |
+| ?sourceUuid    | String  | UUID of the source the filter is on                                                                                |        None        | Unknown           |
+| filterName     | String  | Name of the filter to set the settings of                                                                          |        None        | N/A               |
+| filterSettings | Object  | Object of settings to apply                                                                                        |        None        | N/A               |
+| ?overlay       | Boolean | True == apply the settings on top of existing ones, False == reset the input to its defaults, then apply settings. |        None        | true              |
 
 ---
 
@@ -4417,12 +4421,12 @@ Sets the enable state of a source filter.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sourceName | String | Name of the source the filter is on | None | Unknown |
-| ?sourceUuid | String | UUID of the source the filter is on | None | Unknown |
-| filterName | String | Name of the filter | None | N/A |
-| filterEnabled | Boolean | New enable state of the filter | None | N/A |
+| Name          |  Type   | Description                         | Value Restrictions | ?Default Behavior |
+| ------------- | :-----: | ----------------------------------- | :----------------: | ----------------- |
+| ?sourceName   | String  | Name of the source the filter is on |        None        | Unknown           |
+| ?sourceUuid   | String  | UUID of the source the filter is on |        None        | Unknown           |
+| filterName    | String  | Name of the filter                  |        None        | N/A               |
+| filterEnabled | Boolean | New enable state of the filter      |        None        | N/A               |
 
 ## Scene Items Requests
 
@@ -4438,15 +4442,15 @@ Scenes only
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Name of the scene to get the items of | None | Unknown |
-| ?sceneUuid | String | UUID of the scene to get the items of | None | Unknown |
+| Name       |  Type  | Description                           | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | ------------------------------------- | :----------------: | ----------------- |
+| ?sceneName | String | Name of the scene to get the items of |        None        | Unknown           |
+| ?sceneUuid | String | UUID of the scene to get the items of |        None        | Unknown           |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name       |        Type         | Description                       |
+| ---------- | :-----------------: | --------------------------------- |
 | sceneItems | Array&lt;Object&gt; | Array of scene items in the scene |
 
 ---
@@ -4465,15 +4469,15 @@ Groups only
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Name of the group to get the items of | None | Unknown |
-| ?sceneUuid | String | UUID of the group to get the items of | None | Unknown |
+| Name       |  Type  | Description                           | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | ------------------------------------- | :----------------: | ----------------- |
+| ?sceneName | String | Name of the group to get the items of |        None        | Unknown           |
+| ?sceneUuid | String | UUID of the group to get the items of |        None        | Unknown           |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name       |        Type         | Description                       |
+| ---------- | :-----------------: | --------------------------------- |
 | sceneItems | Array&lt;Object&gt; | Array of scene items in the group |
 
 ---
@@ -4490,17 +4494,17 @@ Scenes and Groups
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Name of the scene or group to search in | None | Unknown |
-| ?sceneUuid | String | UUID of the scene or group to search in | None | Unknown |
-| sourceName | String | Name of the source to find | None | N/A |
-| ?searchOffset | Number | Number of matches to skip during search. >= 0 means first forward. -1 means last (top) item | >= -1 | 0 |
+| Name          |  Type  | Description                                                                                 | Value Restrictions | ?Default Behavior |
+| ------------- | :----: | ------------------------------------------------------------------------------------------- | :----------------: | ----------------- |
+| ?sceneName    | String | Name of the scene or group to search in                                                     |        None        | Unknown           |
+| ?sceneUuid    | String | UUID of the scene or group to search in                                                     |        None        | Unknown           |
+| sourceName    | String | Name of the source to find                                                                  |        None        | N/A               |
+| ?searchOffset | Number | Number of matches to skip during search. >= 0 means first forward. -1 means last (top) item |       >= -1        | 0                 |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name        |  Type  | Description                  |
+| ----------- | :----: | ---------------------------- |
 | sceneItemId | Number | Numeric ID of the scene item |
 
 ---
@@ -4515,16 +4519,16 @@ Gets the source associated with a scene item.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Name of the scene the item is in | None | Unknown |
-| ?sceneUuid | String | UUID of the scene the item is in | None | Unknown |
-| sceneItemId | Number | Numeric ID of the scene item | >= 0 | N/A |
+| Name        |  Type  | Description                      | Value Restrictions | ?Default Behavior |
+| ----------- | :----: | -------------------------------- | :----------------: | ----------------- |
+| ?sceneName  | String | Name of the scene the item is in |        None        | Unknown           |
+| ?sceneUuid  | String | UUID of the scene the item is in |        None        | Unknown           |
+| sceneItemId | Number | Numeric ID of the scene item     |        >= 0        | N/A               |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name       |  Type  | Description                                       |
+| ---------- | :----: | ------------------------------------------------- |
 | sourceName | String | Name of the source associated with the scene item |
 | sourceUuid | String | UUID of the source associated with the scene item |
 
@@ -4542,18 +4546,18 @@ Scenes only
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Name of the scene to create the new item in | None | Unknown |
-| ?sceneUuid | String | UUID of the scene to create the new item in | None | Unknown |
-| ?sourceName | String | Name of the source to add to the scene | None | Unknown |
-| ?sourceUuid | String | UUID of the source to add to the scene | None | Unknown |
-| ?sceneItemEnabled | Boolean | Enable state to apply to the scene item on creation | None | True |
+| Name              |  Type   | Description                                         | Value Restrictions | ?Default Behavior |
+| ----------------- | :-----: | --------------------------------------------------- | :----------------: | ----------------- |
+| ?sceneName        | String  | Name of the scene to create the new item in         |        None        | Unknown           |
+| ?sceneUuid        | String  | UUID of the scene to create the new item in         |        None        | Unknown           |
+| ?sourceName       | String  | Name of the source to add to the scene              |        None        | Unknown           |
+| ?sourceUuid       | String  | UUID of the source to add to the scene              |        None        | Unknown           |
+| ?sceneItemEnabled | Boolean | Enable state to apply to the scene item on creation |        None        | True              |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name        |  Type  | Description                  |
+| ----------- | :----: | ---------------------------- |
 | sceneItemId | Number | Numeric ID of the scene item |
 
 ---
@@ -4570,11 +4574,11 @@ Scenes only
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Name of the scene the item is in | None | Unknown |
-| ?sceneUuid | String | UUID of the scene the item is in | None | Unknown |
-| sceneItemId | Number | Numeric ID of the scene item | >= 0 | N/A |
+| Name        |  Type  | Description                      | Value Restrictions | ?Default Behavior |
+| ----------- | :----: | -------------------------------- | :----------------: | ----------------- |
+| ?sceneName  | String | Name of the scene the item is in |        None        | Unknown           |
+| ?sceneUuid  | String | UUID of the scene the item is in |        None        | Unknown           |
+| sceneItemId | Number | Numeric ID of the scene item     |        >= 0        | N/A               |
 
 ---
 
@@ -4590,18 +4594,18 @@ Scenes only
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Name of the scene the item is in | None | Unknown |
-| ?sceneUuid | String | UUID of the scene the item is in | None | Unknown |
-| sceneItemId | Number | Numeric ID of the scene item | >= 0 | N/A |
-| ?destinationSceneName | String | Name of the scene to create the duplicated item in | None | From scene is assumed |
-| ?destinationSceneUuid | String | UUID of the scene to create the duplicated item in | None | From scene is assumed |
+| Name                  |  Type  | Description                                        | Value Restrictions | ?Default Behavior     |
+| --------------------- | :----: | -------------------------------------------------- | :----------------: | --------------------- |
+| ?sceneName            | String | Name of the scene the item is in                   |        None        | Unknown               |
+| ?sceneUuid            | String | UUID of the scene the item is in                   |        None        | Unknown               |
+| sceneItemId           | Number | Numeric ID of the scene item                       |        >= 0        | N/A                   |
+| ?destinationSceneName | String | Name of the scene to create the duplicated item in |        None        | From scene is assumed |
+| ?destinationSceneUuid | String | UUID of the scene to create the duplicated item in |        None        | From scene is assumed |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name        |  Type  | Description                             |
+| ----------- | :----: | --------------------------------------- |
 | sceneItemId | Number | Numeric ID of the duplicated scene item |
 
 ---
@@ -4618,16 +4622,16 @@ Scenes and Groups
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Name of the scene the item is in | None | Unknown |
-| ?sceneUuid | String | UUID of the scene the item is in | None | Unknown |
-| sceneItemId | Number | Numeric ID of the scene item | >= 0 | N/A |
+| Name        |  Type  | Description                      | Value Restrictions | ?Default Behavior |
+| ----------- | :----: | -------------------------------- | :----------------: | ----------------- |
+| ?sceneName  | String | Name of the scene the item is in |        None        | Unknown           |
+| ?sceneUuid  | String | UUID of the scene the item is in |        None        | Unknown           |
+| sceneItemId | Number | Numeric ID of the scene item     |        >= 0        | N/A               |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name               |  Type  | Description                                 |
+| ------------------ | :----: | ------------------------------------------- |
 | sceneItemTransform | Object | Object containing scene item transform info |
 
 ---
@@ -4642,12 +4646,12 @@ Sets the transform and crop info of a scene item.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Name of the scene the item is in | None | Unknown |
-| ?sceneUuid | String | UUID of the scene the item is in | None | Unknown |
-| sceneItemId | Number | Numeric ID of the scene item | >= 0 | N/A |
-| sceneItemTransform | Object | Object containing scene item transform info to update | None | N/A |
+| Name               |  Type  | Description                                           | Value Restrictions | ?Default Behavior |
+| ------------------ | :----: | ----------------------------------------------------- | :----------------: | ----------------- |
+| ?sceneName         | String | Name of the scene the item is in                      |        None        | Unknown           |
+| ?sceneUuid         | String | UUID of the scene the item is in                      |        None        | Unknown           |
+| sceneItemId        | Number | Numeric ID of the scene item                          |        >= 0        | N/A               |
+| sceneItemTransform | Object | Object containing scene item transform info to update |        None        | N/A               |
 
 ---
 
@@ -4663,16 +4667,16 @@ Scenes and Groups
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Name of the scene the item is in | None | Unknown |
-| ?sceneUuid | String | UUID of the scene the item is in | None | Unknown |
-| sceneItemId | Number | Numeric ID of the scene item | >= 0 | N/A |
+| Name        |  Type  | Description                      | Value Restrictions | ?Default Behavior |
+| ----------- | :----: | -------------------------------- | :----------------: | ----------------- |
+| ?sceneName  | String | Name of the scene the item is in |        None        | Unknown           |
+| ?sceneUuid  | String | UUID of the scene the item is in |        None        | Unknown           |
+| sceneItemId | Number | Numeric ID of the scene item     |        >= 0        | N/A               |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name             |  Type   | Description                                                                 |
+| ---------------- | :-----: | --------------------------------------------------------------------------- |
 | sceneItemEnabled | Boolean | Whether the scene item is enabled. `true` for enabled, `false` for disabled |
 
 ---
@@ -4689,12 +4693,12 @@ Scenes and Groups
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Name of the scene the item is in | None | Unknown |
-| ?sceneUuid | String | UUID of the scene the item is in | None | Unknown |
-| sceneItemId | Number | Numeric ID of the scene item | >= 0 | N/A |
-| sceneItemEnabled | Boolean | New enable state of the scene item | None | N/A |
+| Name             |  Type   | Description                        | Value Restrictions | ?Default Behavior |
+| ---------------- | :-----: | ---------------------------------- | :----------------: | ----------------- |
+| ?sceneName       | String  | Name of the scene the item is in   |        None        | Unknown           |
+| ?sceneUuid       | String  | UUID of the scene the item is in   |        None        | Unknown           |
+| sceneItemId      | Number  | Numeric ID of the scene item       |        >= 0        | N/A               |
+| sceneItemEnabled | Boolean | New enable state of the scene item |        None        | N/A               |
 
 ---
 
@@ -4710,16 +4714,16 @@ Scenes and Groups
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Name of the scene the item is in | None | Unknown |
-| ?sceneUuid | String | UUID of the scene the item is in | None | Unknown |
-| sceneItemId | Number | Numeric ID of the scene item | >= 0 | N/A |
+| Name        |  Type  | Description                      | Value Restrictions | ?Default Behavior |
+| ----------- | :----: | -------------------------------- | :----------------: | ----------------- |
+| ?sceneName  | String | Name of the scene the item is in |        None        | Unknown           |
+| ?sceneUuid  | String | UUID of the scene the item is in |        None        | Unknown           |
+| sceneItemId | Number | Numeric ID of the scene item     |        >= 0        | N/A               |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name            |  Type   | Description                                                               |
+| --------------- | :-----: | ------------------------------------------------------------------------- |
 | sceneItemLocked | Boolean | Whether the scene item is locked. `true` for locked, `false` for unlocked |
 
 ---
@@ -4736,12 +4740,12 @@ Scenes and Group
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Name of the scene the item is in | None | Unknown |
-| ?sceneUuid | String | UUID of the scene the item is in | None | Unknown |
-| sceneItemId | Number | Numeric ID of the scene item | >= 0 | N/A |
-| sceneItemLocked | Boolean | New lock state of the scene item | None | N/A |
+| Name            |  Type   | Description                      | Value Restrictions | ?Default Behavior |
+| --------------- | :-----: | -------------------------------- | :----------------: | ----------------- |
+| ?sceneName      | String  | Name of the scene the item is in |        None        | Unknown           |
+| ?sceneUuid      | String  | UUID of the scene the item is in |        None        | Unknown           |
+| sceneItemId     | Number  | Numeric ID of the scene item     |        >= 0        | N/A               |
+| sceneItemLocked | Boolean | New lock state of the scene item |        None        | N/A               |
 
 ---
 
@@ -4759,16 +4763,16 @@ Scenes and Groups
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Name of the scene the item is in | None | Unknown |
-| ?sceneUuid | String | UUID of the scene the item is in | None | Unknown |
-| sceneItemId | Number | Numeric ID of the scene item | >= 0 | N/A |
+| Name        |  Type  | Description                      | Value Restrictions | ?Default Behavior |
+| ----------- | :----: | -------------------------------- | :----------------: | ----------------- |
+| ?sceneName  | String | Name of the scene the item is in |        None        | Unknown           |
+| ?sceneUuid  | String | UUID of the scene the item is in |        None        | Unknown           |
+| sceneItemId | Number | Numeric ID of the scene item     |        >= 0        | N/A               |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name           |  Type  | Description                      |
+| -------------- | :----: | -------------------------------- |
 | sceneItemIndex | Number | Index position of the scene item |
 
 ---
@@ -4785,12 +4789,12 @@ Scenes and Groups
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Name of the scene the item is in | None | Unknown |
-| ?sceneUuid | String | UUID of the scene the item is in | None | Unknown |
-| sceneItemId | Number | Numeric ID of the scene item | >= 0 | N/A |
-| sceneItemIndex | Number | New index position of the scene item | >= 0 | N/A |
+| Name           |  Type  | Description                          | Value Restrictions | ?Default Behavior |
+| -------------- | :----: | ------------------------------------ | :----------------: | ----------------- |
+| ?sceneName     | String | Name of the scene the item is in     |        None        | Unknown           |
+| ?sceneUuid     | String | UUID of the scene the item is in     |        None        | Unknown           |
+| sceneItemId    | Number | Numeric ID of the scene item         |        >= 0        | N/A               |
+| sceneItemIndex | Number | New index position of the scene item |        >= 0        | N/A               |
 
 ---
 
@@ -4816,16 +4820,16 @@ Scenes and Groups
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Name of the scene the item is in | None | Unknown |
-| ?sceneUuid | String | UUID of the scene the item is in | None | Unknown |
-| sceneItemId | Number | Numeric ID of the scene item | >= 0 | N/A |
+| Name        |  Type  | Description                      | Value Restrictions | ?Default Behavior |
+| ----------- | :----: | -------------------------------- | :----------------: | ----------------- |
+| ?sceneName  | String | Name of the scene the item is in |        None        | Unknown           |
+| ?sceneUuid  | String | UUID of the scene the item is in |        None        | Unknown           |
+| sceneItemId | Number | Numeric ID of the scene item     |        >= 0        | N/A               |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name               |  Type  | Description        |
+| ------------------ | :----: | ------------------ |
 | sceneItemBlendMode | String | Current blend mode |
 
 ---
@@ -4842,12 +4846,12 @@ Scenes and Groups
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sceneName | String | Name of the scene the item is in | None | Unknown |
-| ?sceneUuid | String | UUID of the scene the item is in | None | Unknown |
-| sceneItemId | Number | Numeric ID of the scene item | >= 0 | N/A |
-| sceneItemBlendMode | String | New blend mode | None | N/A |
+| Name               |  Type  | Description                      | Value Restrictions | ?Default Behavior |
+| ------------------ | :----: | -------------------------------- | :----------------: | ----------------- |
+| ?sceneName         | String | Name of the scene the item is in |        None        | Unknown           |
+| ?sceneUuid         | String | UUID of the scene the item is in |        None        | Unknown           |
+| sceneItemId        | Number | Numeric ID of the scene item     |        >= 0        | N/A               |
+| sceneItemBlendMode | String | New blend mode                   |        None        | N/A               |
 
 ## Outputs Requests
 
@@ -4861,8 +4865,8 @@ Gets the status of the virtualcam output.
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name         |  Type   | Description                  |
+| ------------ | :-----: | ---------------------------- |
 | outputActive | Boolean | Whether the output is active |
 
 ---
@@ -4877,8 +4881,8 @@ Toggles the state of the virtualcam output.
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name         |  Type   | Description                  |
+| ------------ | :-----: | ---------------------------- |
 | outputActive | Boolean | Whether the output is active |
 
 ---
@@ -4913,8 +4917,8 @@ Gets the status of the replay buffer output.
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name         |  Type   | Description                  |
+| ------------ | :-----: | ---------------------------- |
 | outputActive | Boolean | Whether the output is active |
 
 ---
@@ -4929,8 +4933,8 @@ Toggles the state of the replay buffer output.
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name         |  Type   | Description                  |
+| ------------ | :-----: | ---------------------------- |
 | outputActive | Boolean | Whether the output is active |
 
 ---
@@ -4975,9 +4979,9 @@ Gets the filename of the last replay buffer save file.
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| savedReplayPath | String | File path |
+| Name            |  Type  | Description |
+| --------------- | :----: | ----------- |
+| savedReplayPath | String | File path   |
 
 ---
 
@@ -4991,8 +4995,8 @@ Gets the list of available outputs.
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name    |        Type         | Description      |
+| ------- | :-----------------: | ---------------- |
 | outputs | Array&lt;Object&gt; | Array of outputs |
 
 ---
@@ -5007,22 +5011,22 @@ Gets the status of an output.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| outputName | String | Output name | None | N/A |
+| Name       |  Type  | Description | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | ----------- | :----------------: | ----------------- |
+| outputName | String | Output name |        None        | N/A               |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| outputActive | Boolean | Whether the output is active |
-| outputReconnecting | Boolean | Whether the output is reconnecting |
-| outputTimecode | String | Current formatted timecode string for the output |
-| outputDuration | Number | Current duration in milliseconds for the output |
-| outputCongestion | Number | Congestion of the output |
-| outputBytes | Number | Number of bytes sent by the output |
-| outputSkippedFrames | Number | Number of frames skipped by the output's process |
-| outputTotalFrames | Number | Total number of frames delivered by the output's process |
+| Name                |  Type   | Description                                              |
+| ------------------- | :-----: | -------------------------------------------------------- |
+| outputActive        | Boolean | Whether the output is active                             |
+| outputReconnecting  | Boolean | Whether the output is reconnecting                       |
+| outputTimecode      | String  | Current formatted timecode string for the output         |
+| outputDuration      | Number  | Current duration in milliseconds for the output          |
+| outputCongestion    | Number  | Congestion of the output                                 |
+| outputBytes         | Number  | Number of bytes sent by the output                       |
+| outputSkippedFrames | Number  | Number of frames skipped by the output's process         |
+| outputTotalFrames   | Number  | Total number of frames delivered by the output's process |
 
 ---
 
@@ -5036,14 +5040,14 @@ Toggles the status of an output.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| outputName | String | Output name | None | N/A |
+| Name       |  Type  | Description | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | ----------- | :----------------: | ----------------- |
+| outputName | String | Output name |        None        | N/A               |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name         |  Type   | Description                  |
+| ------------ | :-----: | ---------------------------- |
 | outputActive | Boolean | Whether the output is active |
 
 ---
@@ -5058,9 +5062,9 @@ Starts an output.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| outputName | String | Output name | None | N/A |
+| Name       |  Type  | Description | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | ----------- | :----------------: | ----------------- |
+| outputName | String | Output name |        None        | N/A               |
 
 ---
 
@@ -5074,9 +5078,9 @@ Stops an output.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| outputName | String | Output name | None | N/A |
+| Name       |  Type  | Description | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | ----------- | :----------------: | ----------------- |
+| outputName | String | Output name |        None        | N/A               |
 
 ---
 
@@ -5090,14 +5094,14 @@ Gets the settings of an output.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| outputName | String | Output name | None | N/A |
+| Name       |  Type  | Description | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | ----------- | :----------------: | ----------------- |
+| outputName | String | Output name |        None        | N/A               |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name           |  Type  | Description     |
+| -------------- | :----: | --------------- |
 | outputSettings | Object | Output settings |
 
 ---
@@ -5112,10 +5116,10 @@ Sets the settings of an output.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| outputName | String | Output name | None | N/A |
-| outputSettings | Object | Output settings | None | N/A |
+| Name           |  Type  | Description     | Value Restrictions | ?Default Behavior |
+| -------------- | :----: | --------------- | :----------------: | ----------------- |
+| outputName     | String | Output name     |        None        | N/A               |
+| outputSettings | Object | Output settings |        None        | N/A               |
 
 ## Stream Requests
 
@@ -5129,16 +5133,16 @@ Gets the status of the stream output.
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| outputActive | Boolean | Whether the output is active |
-| outputReconnecting | Boolean | Whether the output is currently reconnecting |
-| outputTimecode | String | Current formatted timecode string for the output |
-| outputDuration | Number | Current duration in milliseconds for the output |
-| outputCongestion | Number | Congestion of the output |
-| outputBytes | Number | Number of bytes sent by the output |
-| outputSkippedFrames | Number | Number of frames skipped by the output's process |
-| outputTotalFrames | Number | Total number of frames delivered by the output's process |
+| Name                |  Type   | Description                                              |
+| ------------------- | :-----: | -------------------------------------------------------- |
+| outputActive        | Boolean | Whether the output is active                             |
+| outputReconnecting  | Boolean | Whether the output is currently reconnecting             |
+| outputTimecode      | String  | Current formatted timecode string for the output         |
+| outputDuration      | Number  | Current duration in milliseconds for the output          |
+| outputCongestion    | Number  | Congestion of the output                                 |
+| outputBytes         | Number  | Number of bytes sent by the output                       |
+| outputSkippedFrames | Number  | Number of frames skipped by the output's process         |
+| outputTotalFrames   | Number  | Total number of frames delivered by the output's process |
 
 ---
 
@@ -5152,8 +5156,8 @@ Toggles the status of the stream output.
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name         |  Type   | Description                    |
+| ------------ | :-----: | ------------------------------ |
 | outputActive | Boolean | New state of the stream output |
 
 ---
@@ -5188,9 +5192,9 @@ Sends CEA-608 caption text over the stream output.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| captionText | String | Caption text | None | N/A |
+| Name        |  Type  | Description  | Value Restrictions | ?Default Behavior |
+| ----------- | :----: | ------------ | :----------------: | ----------------- |
+| captionText | String | Caption text |        None        | N/A               |
 
 ## Record Requests
 
@@ -5204,13 +5208,13 @@ Gets the status of the record output.
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| outputActive | Boolean | Whether the output is active |
-| outputPaused | Boolean | Whether the output is paused |
-| outputTimecode | String | Current formatted timecode string for the output |
-| outputDuration | Number | Current duration in milliseconds for the output |
-| outputBytes | Number | Number of bytes sent by the output |
+| Name           |  Type   | Description                                      |
+| -------------- | :-----: | ------------------------------------------------ |
+| outputActive   | Boolean | Whether the output is active                     |
+| outputPaused   | Boolean | Whether the output is paused                     |
+| outputTimecode | String  | Current formatted timecode string for the output |
+| outputDuration | Number  | Current duration in milliseconds for the output  |
+| outputBytes    | Number  | Number of bytes sent by the output               |
 
 ---
 
@@ -5224,8 +5228,8 @@ Toggles the status of the record output.
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name         |  Type   | Description                        |
+| ------------ | :-----: | ---------------------------------- |
 | outputActive | Boolean | The new active state of the output |
 
 ---
@@ -5250,8 +5254,8 @@ Stops the record output.
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name       |  Type  | Description                       |
+| ---------- | :----: | --------------------------------- |
 | outputPath | String | File name for the saved recording |
 
 ---
@@ -5308,9 +5312,9 @@ Note: As of OBS 30.2.0, the only file format supporting this feature is Hybrid M
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?chapterName | String | Name of the new chapter | None | Unknown |
+| Name         |  Type  | Description             | Value Restrictions | ?Default Behavior |
+| ------------ | :----: | ----------------------- | :----------------: | ----------------- |
+| ?chapterName | String | Name of the new chapter |        None        | Unknown           |
 
 ## Media Inputs Requests
 
@@ -5335,18 +5339,18 @@ Media States:
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the media input | None | Unknown |
-| ?inputUuid | String | UUID of the media input | None | Unknown |
+| Name       |  Type  | Description             | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | ----------------------- | :----------------: | ----------------- |
+| ?inputName | String | Name of the media input |        None        | Unknown           |
+| ?inputUuid | String | UUID of the media input |        None        | Unknown           |
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
-| mediaState | String | State of the media input |
+| Name          |  Type  | Description                                                                |
+| ------------- | :----: | -------------------------------------------------------------------------- |
+| mediaState    | String | State of the media input                                                   |
 | mediaDuration | Number | Total duration of the playing media in milliseconds. `null` if not playing |
-| mediaCursor | Number | Position of the cursor in milliseconds. `null` if not playing |
+| mediaCursor   | Number | Position of the cursor in milliseconds. `null` if not playing              |
 
 ---
 
@@ -5362,11 +5366,11 @@ This request does not perform bounds checking of the cursor position.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the media input | None | Unknown |
-| ?inputUuid | String | UUID of the media input | None | Unknown |
-| mediaCursor | Number | New cursor position to set | >= 0 | N/A |
+| Name        |  Type  | Description                | Value Restrictions | ?Default Behavior |
+| ----------- | :----: | -------------------------- | :----------------: | ----------------- |
+| ?inputName  | String | Name of the media input    |        None        | Unknown           |
+| ?inputUuid  | String | UUID of the media input    |        None        | Unknown           |
+| mediaCursor | Number | New cursor position to set |        >= 0        | N/A               |
 
 ---
 
@@ -5382,11 +5386,11 @@ This request does not perform bounds checking of the cursor position.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the media input | None | Unknown |
-| ?inputUuid | String | UUID of the media input | None | Unknown |
-| mediaCursorOffset | Number | Value to offset the current cursor position by | None | N/A |
+| Name              |  Type  | Description                                    | Value Restrictions | ?Default Behavior |
+| ----------------- | :----: | ---------------------------------------------- | :----------------: | ----------------- |
+| ?inputName        | String | Name of the media input                        |        None        | Unknown           |
+| ?inputUuid        | String | UUID of the media input                        |        None        | Unknown           |
+| mediaCursorOffset | Number | Value to offset the current cursor position by |        None        | N/A               |
 
 ---
 
@@ -5400,11 +5404,11 @@ Triggers an action on a media input.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the media input | None | Unknown |
-| ?inputUuid | String | UUID of the media input | None | Unknown |
-| mediaAction | String | Identifier of the `ObsMediaInputAction` enum | None | N/A |
+| Name        |  Type  | Description                                  | Value Restrictions | ?Default Behavior |
+| ----------- | :----: | -------------------------------------------- | :----------------: | ----------------- |
+| ?inputName  | String | Name of the media input                      |        None        | Unknown           |
+| ?inputUuid  | String | UUID of the media input                      |        None        | Unknown           |
+| mediaAction | String | Identifier of the `ObsMediaInputAction` enum |        None        | N/A               |
 
 ## Ui Requests
 
@@ -5418,8 +5422,8 @@ Gets whether studio is enabled.
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name              |  Type   | Description                    |
+| ----------------- | :-----: | ------------------------------ |
 | studioModeEnabled | Boolean | Whether studio mode is enabled |
 
 ---
@@ -5434,9 +5438,9 @@ Enables or disables studio mode
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| studioModeEnabled | Boolean | True == Enabled, False == Disabled | None | N/A |
+| Name              |  Type   | Description                        | Value Restrictions | ?Default Behavior |
+| ----------------- | :-----: | ---------------------------------- | :----------------: | ----------------- |
+| studioModeEnabled | Boolean | True == Enabled, False == Disabled |        None        | N/A               |
 
 ---
 
@@ -5450,10 +5454,10 @@ Opens the properties dialog of an input.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the input to open the dialog of | None | Unknown |
-| ?inputUuid | String | UUID of the input to open the dialog of | None | Unknown |
+| Name       |  Type  | Description                             | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | --------------------------------------- | :----------------: | ----------------- |
+| ?inputName | String | Name of the input to open the dialog of |        None        | Unknown           |
+| ?inputUuid | String | UUID of the input to open the dialog of |        None        | Unknown           |
 
 ---
 
@@ -5467,10 +5471,10 @@ Opens the filters dialog of an input.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the input to open the dialog of | None | Unknown |
-| ?inputUuid | String | UUID of the input to open the dialog of | None | Unknown |
+| Name       |  Type  | Description                             | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | --------------------------------------- | :----------------: | ----------------- |
+| ?inputName | String | Name of the input to open the dialog of |        None        | Unknown           |
+| ?inputUuid | String | UUID of the input to open the dialog of |        None        | Unknown           |
 
 ---
 
@@ -5484,10 +5488,10 @@ Opens the interact dialog of an input.
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?inputName | String | Name of the input to open the dialog of | None | Unknown |
-| ?inputUuid | String | UUID of the input to open the dialog of | None | Unknown |
+| Name       |  Type  | Description                             | Value Restrictions | ?Default Behavior |
+| ---------- | :----: | --------------------------------------- | :----------------: | ----------------- |
+| ?inputName | String | Name of the input to open the dialog of |        None        | Unknown           |
+| ?inputUuid | String | UUID of the input to open the dialog of |        None        | Unknown           |
 
 ---
 
@@ -5501,8 +5505,8 @@ Gets a list of connected monitors and information about them.
 
 **Response Fields:**
 
-| Name | Type  | Description |
-| ---- | :---: | ----------- |
+| Name     |        Type         | Description                                       |
+| -------- | :-----------------: | ------------------------------------------------- |
 | monitors | Array&lt;Object&gt; | a list of detected monitors with some information |
 
 ---
@@ -5525,11 +5529,11 @@ Note: This request serves to provide feature parity with 4.x. It is very likely 
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| videoMixType | String | Type of mix to open | None | N/A |
-| ?monitorIndex | Number | Monitor index, use `GetMonitorList` to obtain index | None | -1: Opens projector in windowed mode |
-| ?projectorGeometry | String | Size/Position data for a windowed projector, in Qt Base64 encoded format. Mutually exclusive with `monitorIndex` | None | N/A |
+| Name               |  Type  | Description                                                                                                      | Value Restrictions | ?Default Behavior                    |
+| ------------------ | :----: | ---------------------------------------------------------------------------------------------------------------- | :----------------: | ------------------------------------ |
+| videoMixType       | String | Type of mix to open                                                                                              |        None        | N/A                                  |
+| ?monitorIndex      | Number | Monitor index, use `GetMonitorList` to obtain index                                                              |        None        | -1: Opens projector in windowed mode |
+| ?projectorGeometry | String | Size/Position data for a windowed projector, in Qt Base64 encoded format. Mutually exclusive with `monitorIndex` |        None        | N/A                                  |
 
 ---
 
@@ -5545,9 +5549,9 @@ Note: This request serves to provide feature parity with 4.x. It is very likely 
 
 **Request Fields:**
 
-| Name | Type  | Description | Value Restrictions | ?Default Behavior |
-| ---- | :---: | ----------- | :----------------: | ----------------- |
-| ?sourceName | String | Name of the source to open a projector for | None | Unknown |
-| ?sourceUuid | String | UUID of the source to open a projector for | None | Unknown |
-| ?monitorIndex | Number | Monitor index, use `GetMonitorList` to obtain index | None | -1: Opens projector in windowed mode |
-| ?projectorGeometry | String | Size/Position data for a windowed projector, in Qt Base64 encoded format. Mutually exclusive with `monitorIndex` | None | N/A |
+| Name               |  Type  | Description                                                                                                      | Value Restrictions | ?Default Behavior                    |
+| ------------------ | :----: | ---------------------------------------------------------------------------------------------------------------- | :----------------: | ------------------------------------ |
+| ?sourceName        | String | Name of the source to open a projector for                                                                       |        None        | Unknown                              |
+| ?sourceUuid        | String | UUID of the source to open a projector for                                                                       |        None        | Unknown                              |
+| ?monitorIndex      | Number | Monitor index, use `GetMonitorList` to obtain index                                                              |        None        | -1: Opens projector in windowed mode |
+| ?projectorGeometry | String | Size/Position data for a windowed projector, in Qt Base64 encoded format. Mutually exclusive with `monitorIndex` |        None        | N/A                                  |
