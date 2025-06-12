@@ -430,10 +430,9 @@ void EventHandler::HandleInputAudioMonitorTypeChanged(void *param, calldata_t *d
 }
 
 /**
- * A high-volume event providing volume levels of all active inputs and outputs every 50 milliseconds.
+ * A high-volume event providing volume levels of all active inputs every 50 milliseconds.
  *
- * @dataField inputs  | Array<Object> | Array of active inputs with their associated volume levels
- * @dataField outputs | Array<Object> | Array of active outputs with their associated volume levels
+ * @dataField inputs | Array<Object> | Array of active inputs with their associated volume levels
  *
  * @eventType InputVolumeMeters
  * @eventSubscription InputVolumeMeters
@@ -443,10 +442,9 @@ void EventHandler::HandleInputAudioMonitorTypeChanged(void *param, calldata_t *d
  * @api events
  * @category inputs
  */
-void EventHandler::HandleInputVolumeMeters(std::vector<json> inputs, std::vector<json> outputs)
+void EventHandler::HandleInputVolumeMeters(std::vector<json> inputs)
 {
 	json eventData;
 	eventData["inputs"] = inputs;
-	eventData["outputs"] = outputs;
 	BroadcastEvent(EventSubscription::InputVolumeMeters, "InputVolumeMeters", eventData);
 }

@@ -70,47 +70,10 @@ namespace Utils {
 				static void InputVolumeCallback(void *priv_data, calldata_t *cd);
 			};
 
-			// Keeps a running tally of the current audio levels, for a specific output
-			class OutputMeter {
-			public:
-				OutputMeter(obs_source_t *output);
-				~OutputMeter();
-
-				bool OutputValid();
-				obs_weak_source_t *GetWeakOutput() { return _output; }
-				json GetMeterData();
-
-				std::atomic<enum obs_peak_meter_type> PeakMeterType;
-
-			private:
-				OBSWeakSourceAutoRelease _output;
-
-				// All values in mul
-				std::mutex _mutex;
-				bool _muted;
-				int _channels;
-				float _magnitude[MAX_AUDIO_CHANNELS];
-				float _peak[MAX_AUDIO_CHANNELS];
-				float _previousSamples[MAX_AUDIO_CHANNELS][4];
-
-				std::atomic<uint64_t> _lastUpdate;
-				std::atomic<float> _volume;
-
-				void ResetAudioLevels();
-				void ProcessAudioChannels(const struct audio_data *data);
-				void ProcessPeak(const struct audio_data *data);
-				void ProcessMagnitude(const struct audio_data *data);
-
-				static void OutputAudioCaptureCallback(void *priv_data, obs_source_t *source,
-								       const struct audio_data *data, bool muted);
-				static void OutputVolumeCallback(void *priv_data, calldata_t *cd);
-			};
-
-			// Maintains an array of active inputs and outputs
+			// Maintains an array of active inputs
 			class Handler {
-				typedef std::function<void(std::vector<json>, std::vector<json>)> UpdateCallback;
+				typedef std::function<void(std::vector<json>)> UpdateCallback;
 				typedef std::unique_ptr<Meter> MeterPtr;
-				typedef std::unique_ptr<OutputMeter> OutputMeterPtr;
 
 			public:
 				Handler(UpdateCallback cb, uint64_t updatePeriod = 50);
@@ -121,7 +84,6 @@ namespace Utils {
 
 				std::mutex _meterMutex;
 				std::vector<MeterPtr> _meters;
-				std::vector<OutputMeterPtr> _outputMeters;
 				uint64_t _updatePeriod;
 
 				std::mutex _mutex;
