@@ -74,7 +74,7 @@ void EventHandler::HandleStreamStateChanged(ObsOutputState state)
  * @api events
  * @category outputs
  */
-void EventHandler::HandleRecordStateChanged(ObsOutputState state)
+void EventHandler::HandleRecordStateChanged(ObsOutputState state, const std::string& customText)
 {
 	json eventData;
 	eventData["outputActive"] = GetOutputStateActive(state);
@@ -83,6 +83,9 @@ void EventHandler::HandleRecordStateChanged(ObsOutputState state)
 		eventData["outputPath"] = Utils::Obs::StringHelper::GetLastRecordFileName();
 	} else {
 		eventData["outputPath"] = nullptr;
+	}
+	if (!customText.empty()) {
+		eventData["customText"] = customText;
 	}
 	BroadcastEvent(EventSubscription::Outputs, "RecordStateChanged", eventData);
 }

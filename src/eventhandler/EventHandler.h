@@ -67,6 +67,7 @@ private:
 
 	// Signal handler: frontend
 	static void OnFrontendEvent(enum obs_frontend_event event, void *private_data);
+	void HandleLogSend(const char *message);
 	void FrontendFinishedLoadingMultiHandler();
 	void FrontendExitMultiHandler();
 
@@ -157,7 +158,7 @@ private:
 
 	// Outputs
 	void HandleStreamStateChanged(ObsOutputState state);
-	void HandleRecordStateChanged(ObsOutputState state);
+	void HandleRecordStateChanged(ObsOutputState state, const std::string& customText = "");
 	static void HandleRecordFileChanged(void *param, calldata_t *data); // Direct callback
 	void HandleReplayBufferStateChanged(ObsOutputState state);
 	void HandleVirtualcamStateChanged(ObsOutputState state);

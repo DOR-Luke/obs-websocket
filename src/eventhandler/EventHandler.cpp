@@ -412,7 +412,15 @@ void EventHandler::OnFrontendEvent(enum obs_frontend_event event, void *private_
 	case OBS_FRONTEND_EVENT_REPLAY_BUFFER_SAVED:
 		eventHandler->HandleReplayBufferSaved();
 		break;
-
+	case OBS_INVALID_OUTPUT_PATH:
+		eventHandler->HandleRecordStateChanged(OBS_WEBSOCKET_OUTPUT_STOPPED, "OBS_INVALID_OUTPUT_PATH");
+		break;
+	case OBS_LOW_DISK_SPACE:
+		eventHandler->HandleRecordStateChanged(OBS_WEBSOCKET_OUTPUT_STOPPED, "OBS_LOW_DISK_SPACE");
+		break;
+	case OBS_RECORDING_ERROR:
+		eventHandler->HandleRecordStateChanged(OBS_WEBSOCKET_OUTPUT_STOPPED, "OBS_RECORDING_ERROR");
+		break;
 	// Ui
 	case OBS_FRONTEND_EVENT_STUDIO_MODE_ENABLED:
 		eventHandler->HandleStudioModeStateChanged(true);
@@ -611,4 +619,9 @@ void EventHandler::StreamOutputReconnectSuccessHandler(void *param, calldata_t *
 	auto eventHandler = static_cast<EventHandler *>(param);
 
 	eventHandler->HandleStreamStateChanged(OBS_WEBSOCKET_OUTPUT_RECONNECTED);
+}
+
+void EventHandler::HandleLogSend(const char *message)
+{
+	HandleRecordStateChanged(OBS_WEBSOCKET_OUTPUT_STOPPED, message);
 }
