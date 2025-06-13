@@ -74,7 +74,7 @@ void EventHandler::HandleStreamStateChanged(ObsOutputState state)
  * @api events
  * @category outputs
  */
-void EventHandler::HandleRecordStateChanged(ObsOutputState state, const std::string& customText)
+void EventHandler::HandleRecordStateChanged(ObsOutputState state)
 {
 	json eventData;
 	eventData["outputActive"] = GetOutputStateActive(state);
@@ -84,10 +84,16 @@ void EventHandler::HandleRecordStateChanged(ObsOutputState state, const std::str
 	} else {
 		eventData["outputPath"] = nullptr;
 	}
-	if (!customText.empty()) {
-		eventData["customText"] = customText;
-	}
 	BroadcastEvent(EventSubscription::Outputs, "RecordStateChanged", eventData);
+}
+
+void EventHandler::HandleErrorStateChanged(const std::string& errorMessage)
+{
+	json eventData;
+	if (!errorMessage.empty()) {
+		eventData["errorMessage"] = errorMessage;
+	}
+	BroadcastEvent(EventSubscription::Outputs, "ErrorStateChanged", eventData);
 }
 
 /**

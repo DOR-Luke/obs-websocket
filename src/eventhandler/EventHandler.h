@@ -158,7 +158,8 @@ private:
 
 	// Outputs
 	void HandleStreamStateChanged(ObsOutputState state);
-	void HandleRecordStateChanged(ObsOutputState state, const std::string& customText = "");
+	void HandleRecordStateChanged(ObsOutputState state);
+	void HandleErrorStateChanged(const std::string& errorMessage = "");
 	static void HandleRecordFileChanged(void *param, calldata_t *data); // Direct callback
 	void HandleReplayBufferStateChanged(ObsOutputState state);
 	void HandleVirtualcamStateChanged(ObsOutputState state);
