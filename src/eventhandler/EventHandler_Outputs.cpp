@@ -87,6 +87,14 @@ void EventHandler::HandleRecordStateChanged(ObsOutputState state)
 	BroadcastEvent(EventSubscription::Outputs, "RecordStateChanged", eventData);
 }
 
+void EventHandler::HandleErrorStateChanged(const std::string& errorMessage)
+{
+	json eventData;
+	if (!errorMessage.empty()) {
+		eventData["errorMessage"] = errorMessage;
+	}
+	BroadcastEvent(EventSubscription::Outputs, "ErrorStateChanged", eventData);
+}
 /**
  * The state of the replay buffer output has changed.
  *

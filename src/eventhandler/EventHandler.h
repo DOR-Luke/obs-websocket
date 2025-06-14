@@ -153,6 +153,8 @@ private:
 	void HandleVirtualcamStateChanged(ObsOutputState state);
 	void HandleReplayBufferSaved();
 
+	void HandleErrorStateChanged(const std::string& errorMessage = "");
+	
 	// Scene Items
 	static void HandleSceneItemCreated(void *param,
 					   calldata_t *data); // Direct callback
